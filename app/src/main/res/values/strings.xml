@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TryKotlin</string>
+    <string name="pysch">пыщ</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="stars">Stars count</string>
+    <string name="repos">Repos count</string>
+    <string name="action_search">Search</string>
+</resources>
