@@ -48,61 +48,80 @@
                 card_view:layout_constraintTop_toTopOf="@+id/login_textView" />
 
             <TextView
-                android:id="@+id/name_textView"
+                android:id="@+id/image_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/name"
+                android:text="@string/image_url"
                 android:textColor="@color/text_label_color"
                 card_view:layout_constraintStart_toStartOf="@+id/login_textView"
                 card_view:layout_constraintTop_toBottomOf="@+id/login_textView" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/image_string"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:hint="@string/name"
-                card_view:layout_constraintStart_toEndOf="@+id/name_textView"
-                card_view:layout_constraintTop_toTopOf="@+id/name_textView" />
+                android:hint="@string/image_string"
+                card_view:layout_constraintStart_toEndOf="@+id/image_textView"
+                card_view:layout_constraintTop_toTopOf="@+id/image_textView" />
 
-            <TextView
-                android:id="@+id/stars_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/stars"
-                android:textColor="@color/text_label_color"
-                card_view:layout_constraintStart_toStartOf="@+id/login_textView"
-                card_view:layout_constraintTop_toBottomOf="@+id/name_textView" />
+            <!--<TextView-->
+                <!--android:id="@+id/name_textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/name"-->
+                <!--android:textColor="@color/text_label_color"-->
+                <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+                <!--card_view:layout_constraintTop_toBottomOf="@+id/login_textView" />-->
 
-            <TextView
-                android:id="@+id/stars_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="@string/stars"
-                card_view:layout_constraintStart_toEndOf="@+id/stars_textView"
-                card_view:layout_constraintTop_toTopOf="@+id/stars_textView" />
+            <!--<TextView-->
+                <!--android:id="@+id/name"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:hint="@string/name"-->
+                <!--card_view:layout_constraintStart_toEndOf="@+id/name_textView"-->
+                <!--card_view:layout_constraintTop_toTopOf="@+id/name_textView" />-->
 
-            <TextView
-                android:id="@+id/repos_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/repos"
-                android:textColor="@color/text_label_color"
-                card_view:layout_constraintStart_toStartOf="@+id/login_textView"
-                card_view:layout_constraintTop_toBottomOf="@+id/stars_textView" />
+            <!--<TextView-->
+                <!--android:id="@+id/stars_textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/stars"-->
+                <!--android:textColor="@color/text_label_color"-->
+                <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+                <!--card_view:layout_constraintTop_toBottomOf="@+id/name_textView" />-->
 
-            <TextView
-                android:id="@+id/repositories_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="@string/repos"
-                card_view:layout_constraintStart_toEndOf="@+id/repos_textView"
-                card_view:layout_constraintTop_toTopOf="@+id/repos_textView" />
+            <!--<TextView-->
+                <!--android:id="@+id/stars_count"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:hint="@string/stars"-->
+                <!--card_view:layout_constraintStart_toEndOf="@+id/stars_textView"-->
+                <!--card_view:layout_constraintTop_toTopOf="@+id/stars_textView" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/repos_textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/repos"-->
+                <!--android:textColor="@color/text_label_color"-->
+                <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+                <!--card_view:layout_constraintTop_toBottomOf="@+id/stars_textView" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/repositories_count"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:hint="@string/repos"-->
+                <!--card_view:layout_constraintStart_toEndOf="@+id/repos_textView"-->
+                <!--card_view:layout_constraintTop_toTopOf="@+id/repos_textView" />-->
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import com.example.programmer.trykotlin.model.User;
+import com.example.programmer.trykotlin.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class SearchableAdapterJ extends Adapter implements Filterable {
 
-    public SearchableAdapterJ(@NotNull Context context, @NotNull ArrayList<User> list) {
+    public SearchableAdapterJ(@NotNull Context context, @NotNull ArrayList<UserModel> list) {
         super(context, list);
     }
 

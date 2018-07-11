@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.programmer.trykotlin.R
-import com.example.programmer.trykotlin.model.User
+import com.example.programmer.trykotlin.model.UserModel
 
-open class Adapter(val context: Context, var list: ArrayList<User>) : RecyclerView.Adapter<Holder>() {
+open class Adapter(val context: Context, var list: List<UserModel>) : RecyclerView.Adapter<Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder
     {
@@ -25,7 +25,7 @@ open class Adapter(val context: Context, var list: ArrayList<User>) : RecyclerVi
 
     fun filter(query: String) {
         println("filter")
-        list = list.filter { it.name?.toLowerCase()?.contains(query.toLowerCase()) ?: false } as ArrayList<User>
+        list = list.filter { it.login.toLowerCase().contains(query.toLowerCase()) }
         notifyDataSetChanged()
 
         list.forEach{ println(it.toString())}
