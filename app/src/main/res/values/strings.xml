@@ -8,4 +8,6 @@
     <string name="action_search">Search</string>
     <string name="image_url">image Url</string>
     <string name="image_string">image String</string>
+    <string name="pusch">пущ</string>
+    <string name="value">Value</string>
 </resources>

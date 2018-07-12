@@ -1,5 +1,5 @@
 package com.example.programmer.trykotlin
 
-interface BasePresenter<BaseView> {
+interface BasePresenter {
     fun start()
 }

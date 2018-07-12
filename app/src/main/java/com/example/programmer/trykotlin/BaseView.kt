@@ -2,7 +2,11 @@ package com.example.programmer.trykotlin
 
 import com.example.programmer.trykotlin.model.User
 
-interface BaseView {
+interface BaseView<T> {
+
+    fun setPresenter(presenter: T)
+
+    fun start()
 
 //    fun show()
 //
@@ -10,7 +14,7 @@ interface BaseView {
 //
 //    fun update()
 
-    fun showAllUsers()
+//    fun showAllUsers()
 
-    fun showOneUser(user: User)
+//    fun showOneUser(user: User)
 }

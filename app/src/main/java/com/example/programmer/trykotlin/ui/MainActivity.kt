@@ -1,4 +1,4 @@
-package com.example.programmer.trykotlin.ui;
+package com.example.programmer.trykotlin.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,25 +10,38 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import com.example.programmer.trykotlin.App
-import com.example.programmer.trykotlin.BaseView
+import com.example.programmer.trykotlin.MainContract
+import com.example.programmer.trykotlin.MainPresenter
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.Repo
 import com.example.programmer.trykotlin.model.RepoUserModel
-import com.example.programmer.trykotlin.model.User
+import com.example.programmer.trykotlin.model.UserModel
 
-class MainActivity: AppCompatActivity(), BaseView/*, SwipeRefreshLayout.OnRefreshListener*/{
+class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout.OnRefreshListener*/{
 
-    private val repo = Repo()
-    private val userRepo = RepoUserModel()
+//    private val userRepo = RepoUserModel()
     private var recycler: RecyclerView? = null
+    private lateinit var presenter: MainContract.Presenter
 
 
-    override fun showAllUsers() {
-        userRepo.getAllUsers().forEach{ println(it.toString())}
+    override fun setPresenter(presenter: MainContract.Presenter) {
+        this.presenter = presenter
     }
 
-    override fun showOneUser(user: User) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showListUsers(listUserModel: List<UserModel>) {
+        listUserModel.forEach{ println(it.toString())}
+    }
+
+    override fun showOneUser(userModel: UserModel) {
+        println(userModel)
+    }
+
+    override fun updateList() {
+        recycler?.adapter = Adapter(this, presenter.getList())
+    }
+
+    override fun start() {
+        recycler?.adapter = Adapter(this, presenter.getList())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,22 +51,23 @@ class MainActivity: AppCompatActivity(), BaseView/*, SwipeRefreshLayout.OnRefres
         println("onCreate")
         App.initApi()
 
-//        var mPresenter: BasePresenter<MainActivity>
         recycler = findViewById(R.id.recycler_view)
-
-        repo.createNewUsers()
         recycler?.layoutManager = LinearLayoutManager(this)
-        recycler?.adapter = Adapter(this, userRepo.getAllUsers())
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
 
         findViewById<Button>(R.id.button_p).setOnClickListener {
-
-        userRepo.requestAllUsers()
-        recycler?.adapter = Adapter(this, userRepo.getAllUsers()) //?
-        // TODO update UI after update data, delay
-
+//            userRepo.requestAllUsers()
+//            recycler?.adapter = Adapter(this, userRepo.getAllUsers()) //?
+            presenter.request()
+            // TODO update UI after update data, delay
         }
+        findViewById<Button>(R.id.button_f).setOnClickListener {
+            presenter.update()
+        }
+        setPresenter(MainPresenter(this))
+        presenter.start()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -78,18 +92,18 @@ class MainActivity: AppCompatActivity(), BaseView/*, SwipeRefreshLayout.OnRefres
             override fun onQueryTextSubmit(query: String): Boolean {
                 println("onQueryTextSubmit $query")
 
-                userRepo.requestSearch(query)
-                recycler?.adapter = Adapter(this@MainActivity, userRepo.getAllUsers()) //?
-
+//                userRepo.requestSearch(query)
+//                recycler?.adapter = Adapter(this@MainActivity, userRepo.getAllUsers()) //?
+                presenter.update()
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 println("onQueryTextChange $newText")
 
-                (recycler?.adapter as Adapter).list = userRepo.getAllUsers()
-                        .filter { it.login.toLowerCase().contains(newText.toLowerCase()) }
-                recycler?.adapter?.notifyDataSetChanged()
+//                (recycler?.adapter as Adapter).list = userRepo.getAllUsers()
+//                        .filter { it.login.toLowerCase().contains(newText.toLowerCase()) }
+//                recycler?.adapter?.notifyDataSetChanged()
                 return false
             }
 

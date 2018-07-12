@@ -23,8 +23,9 @@ class UserModel(@SerializedName("login")
                 @Expose
                 var repositoriesCount:Int = 0) {
 
-
-
+    override fun toString(): String {
+        return "{login: $login, id: $id, avatarUrl: $avatarUrl, email: $email, company: $company, repositoriesCount: $repositoriesCount}"
+    }
 }
 
 //@SerializedName("login")

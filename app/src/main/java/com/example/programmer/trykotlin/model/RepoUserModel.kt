@@ -12,6 +12,8 @@ class RepoUserModel {
 //        userList = users
 //    }
 
+    fun getString() = userList.forEach { println(it.toString())}
+
     fun getUserById(id: Int) = userList.find { it.id == id }
 
     fun getAllUsers() = userList
@@ -25,6 +27,7 @@ class RepoUserModel {
 
             override fun onResponse(call: Call<List<UserModel>>?, response: Response<List<UserModel>>?) {
                 println("getUsers onResponse")
+                println("size ${response?.body()?.size}")
                 response?.body()?.let { it1 -> userList = it1 }
             }
         })
