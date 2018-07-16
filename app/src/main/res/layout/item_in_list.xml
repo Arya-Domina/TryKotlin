@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="#c0cfd2"
+    card_view:cardBackgroundColor="@color/card_background"
     card_view:cardCornerRadius="12dp"
     card_view:cardElevation="3dp"
     card_view:contentPadding="6dp"
@@ -16,8 +16,8 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/small_image_size"
+            android:layout_height="@dimen/small_image_size"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:background="@color/icon_background"

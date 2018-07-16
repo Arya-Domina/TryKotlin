@@ -1,5 +1,6 @@
-package com.example.programmer.trykotlin.ui
+package com.example.programmer.trykotlin.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -13,9 +14,8 @@ import com.example.programmer.trykotlin.App
 import com.example.programmer.trykotlin.MainContract
 import com.example.programmer.trykotlin.MainPresenter
 import com.example.programmer.trykotlin.R
-import com.example.programmer.trykotlin.model.Repo
-import com.example.programmer.trykotlin.model.RepoUserModel
 import com.example.programmer.trykotlin.model.UserModel
+import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
 class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout.OnRefreshListener*/{
 
@@ -34,14 +34,17 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
 
     override fun showOneUser(userModel: UserModel) {
         println(userModel)
+        startActivity(Intent(this, UserDetailsActivity::class.java))
     }
 
     override fun updateList() {
-        recycler?.adapter = Adapter(this, presenter.getList())
+        recycler?.adapter = UserListAdapter(this, presenter.getRepo())
+//        recycler?.adapter = UserListAdapter(this, presenter.getList())
     }
 
     override fun start() {
-        recycler?.adapter = Adapter(this, presenter.getList())
+        recycler?.adapter = UserListAdapter(this, presenter.getRepo())
+//        recycler?.adapter = UserListAdapter(this, presenter.getList())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +61,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
 
         findViewById<Button>(R.id.button_p).setOnClickListener {
 //            userRepo.requestAllUsers()
-//            recycler?.adapter = Adapter(this, userRepo.getAllUsers()) //?
+//            recycler?.adapter = UserListAdapter(this, userRepo.getAllUsers()) //?
             presenter.request()
             // TODO update UI after update data, delay
         }
@@ -93,7 +96,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
                 println("onQueryTextSubmit $query")
 
 //                userRepo.requestSearch(query)
-//                recycler?.adapter = Adapter(this@MainActivity, userRepo.getAllUsers()) //?
+//                recycler?.adapter = UserListAdapter(this@MainActivity, userRepo.getAllUsers()) //?
                 presenter.update()
                 return false
             }
@@ -101,7 +104,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
             override fun onQueryTextChange(newText: String): Boolean {
                 println("onQueryTextChange $newText")
 
-//                (recycler?.adapter as Adapter).list = userRepo.getAllUsers()
+//                (recycler?.adapter as UserListAdapter).list = userRepo.getAllUsers()
 //                        .filter { it.login.toLowerCase().contains(newText.toLowerCase()) }
 //                recycler?.adapter?.notifyDataSetChanged()
                 return false

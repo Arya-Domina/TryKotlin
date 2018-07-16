@@ -18,6 +18,8 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
     override fun getList(): List<UserModel> =
             userRepo.getAllUsers()
 
+    override fun getRepo(): RepoUserModel =
+            userRepo
 
     override fun getUser(id: Int): UserModel? =
             userRepo.getUserById(id)

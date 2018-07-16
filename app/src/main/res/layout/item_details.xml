@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/card_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/normal_image_size"
+            android:layout_height="@dimen/normal_image_size"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@color/icon_background"
+            android:src="@drawable/icon"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pair_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<include layout="@layout/pair"-->
+                <!--android:id="@+id/name"/>-->
+            <!--<include layout="@layout/pair"-->
+                <!--android:id="@+id/login"/>-->
+            <!--<include layout="@layout/pair"-->
+                <!--android:id="@+id/email"/>-->
+            <!--<include layout="@layout/pair"-->
+                <!--android:id="@+id/company"/>-->
+            <!--<include layout="@layout/pair"-->
+                <!--android:id="@+id/repos_count"/>-->
+        </LinearLayout>
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/login_textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="@string/login"-->
+                <!--android:textColor="@color/text_label_color"-->
+                <!--card_view:layout_constraintStart_toStartOf="parent"-->
+                <!--card_view:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/login"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:hint="@string/login"-->
+                <!--card_view:layout_constraintStart_toEndOf="@+id/login_textView"-->
+                <!--card_view:layout_constraintTop_toTopOf="@+id/login_textView" />-->
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/name_textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:text="@string/name"-->
+            <!--android:textColor="@color/text_label_color"-->
+            <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+            <!--card_view:layout_constraintTop_toBottomOf="@+id/login_textView" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:hint="@string/name"-->
+            <!--card_view:layout_constraintStart_toEndOf="@+id/name_textView"-->
+            <!--card_view:layout_constraintTop_toTopOf="@+id/name_textView" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/stars_textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:text="@string/stars"-->
+            <!--android:textColor="@color/text_label_color"-->
+            <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+            <!--card_view:layout_constraintTop_toBottomOf="@+id/name_textView" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/stars_count"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:hint="@string/stars"-->
+            <!--card_view:layout_constraintStart_toEndOf="@+id/stars_textView"-->
+            <!--card_view:layout_constraintTop_toTopOf="@+id/stars_textView" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/repos_textView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:text="@string/repos"-->
+            <!--android:textColor="@color/text_label_color"-->
+            <!--card_view:layout_constraintStart_toStartOf="@+id/login_textView"-->
+            <!--card_view:layout_constraintTop_toBottomOf="@+id/stars_textView" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/repositories_count"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:hint="@string/repos"-->
+            <!--card_view:layout_constraintStart_toEndOf="@+id/repos_textView"-->
+            <!--card_view:layout_constraintTop_toTopOf="@+id/repos_textView" />-->
+        <!--</android.support.constraint.ConstraintLayout>-->
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

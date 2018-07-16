@@ -1,14 +1,12 @@
-package com.example.programmer.trykotlin.ui
+package com.example.programmer.trykotlin.ui.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.example.programmer.trykotlin.R
-import com.example.programmer.trykotlin.model.User
 import com.example.programmer.trykotlin.model.UserModel
 
-class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//    var mText: TextView
+class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var login: TextView = itemView.findViewById(R.id.login)
     var imageUrl: TextView = itemView.findViewById(R.id.image_string)
 //    var name: TextView = itemView.findViewById(R.id.name)
@@ -16,17 +14,21 @@ class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //    private var repositoriesCount: TextView = itemView.findViewById(R.id.repositories_count)
 
 //    init {
-//        println("init Holder")
+//        println("init UserListHolder")
 //        mText = itemView.findViewById(R.id.text)
 //    }
 
+    //TODO bind one User
     fun bind(user: UserModel) {
-//        println("bind Holder")
-//        mText.text = user.toString()
         login.text = user.login
         imageUrl.text = user.avatarUrl
-//        name.text = user.name
-//        starsCount.text = user.starsCount.toString()
-//        repositoriesCount.text = user.repositories?.size.toString()
+//        itemView.setOnClickListener{
+//            println("click $user")
+//            itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(USER, user))
+//        }
+    }
+
+    fun bindOnClick(l: View.OnClickListener) {
+        itemView.setOnClickListener(l)
     }
 }

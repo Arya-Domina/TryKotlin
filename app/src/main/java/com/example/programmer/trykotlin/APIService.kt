@@ -5,6 +5,7 @@ import com.example.programmer.trykotlin.model.UserModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface APIService {
@@ -19,4 +20,7 @@ interface APIService {
 
     @GET("search/users")
     fun searchUser(@Query("q") query: String): Call<SearchResultModel>
+
+    @GET("users/{username}")
+    fun userDetails(@Path("username") userName: String): Call<UserModel>
 }

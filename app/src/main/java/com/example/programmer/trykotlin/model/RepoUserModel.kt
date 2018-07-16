@@ -14,9 +14,48 @@ class RepoUserModel {
 
     fun getString() = userList.forEach { println(it.toString())}
 
-    fun getUserById(id: Int) = userList.find { it.id == id }
+    fun getUserById(id: Int): UserModel? {
+        var user = userList.find { it.id == id }
+        val index = userList.indexOf(user)
+        if (user != null && !user.hasDetails && user.login != null)
+            App.getApi().userDetails(user.login ?: "").enqueue(object: Callback<UserModel> {
+                override fun onFailure(call: Call<UserModel>?, t: Throwable?) {
+                    println("userDetails onFailure")
+                    println(t)
+                }
+
+                override fun onResponse(call: Call<UserModel>?, response: Response<UserModel>?) {
+                    println("userDetails onResponse")
+//                    userList[index] = response?.body()
+                    user = response?.body()
+//                    val newUser = response?.body()
+//                    userList[index].name = newUser?.name.toString()
+//                    userList[index].email = newUser?.email.toString()
+//                    userList[index].company = newUser?.company.toString()
+//                    userList[index].repositoriesCount = newUser?.repositoriesCount ?: 0
+//                    userList[index].hasDetails = true
+                    println("getUserById list $userList")
+                }
+            })
+
+        return user
+    }
 
     fun getAllUsers() = userList
+
+    fun requestUser(username: String) =
+            App.getApi().userDetails(username).enqueue(object: Callback<UserModel> {
+                override fun onFailure(call: Call<UserModel>?, t: Throwable?) {
+                    println("userDetails onFailure")
+                    println(t)
+                }
+
+                override fun onResponse(call: Call<UserModel>?, response: Response<UserModel>?) {
+                    println("userDetails onResponse")
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
+
 
     fun requestAllUsers() =
         App.getApi().getUsers().enqueue(object: Callback<List<UserModel>> {
@@ -45,4 +84,6 @@ class RepoUserModel {
                     response?.body()?.items?.let { it1 -> userList = it1}
                 }
             })
+
 }
+

@@ -2,29 +2,34 @@ package com.example.programmer.trykotlin.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 class UserModel(@SerializedName("login")
                 @Expose
-                var login: String,
+                var login: String?,
                 @SerializedName("id")
                 @Expose
-                var id:Int = 0,
+                var id:Int? = 0,
+                @SerializedName("name")
+                @Expose
+                var name: String?,
                 @SerializedName("avatar_url")
                 @Expose
-                var avatarUrl:String,
+                var avatarUrl:String?,
                 @SerializedName("email")
                 @Expose
-                var email:String,
+                var email:String?,
                 @SerializedName("company")
                 @Expose
-                var company:String,
+                var company:String?,
                 @SerializedName("public_repos")
                 @Expose
-                var repositoriesCount:Int = 0) {
+                var repositoriesCount:Int? = 0,
+                var hasDetails: Boolean = false): Serializable {
 
     override fun toString(): String {
-        return "{login: $login, id: $id, avatarUrl: $avatarUrl, email: $email, company: $company, repositoriesCount: $repositoriesCount}"
+        return "{login: $login, id: $id, name: $name, avatarUrl: $avatarUrl, email: $email, company: $company, repositoriesCount: $repositoriesCount} \n"
     }
 }
 

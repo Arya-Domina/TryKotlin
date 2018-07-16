@@ -7,4 +7,5 @@
     <color name="icon_background">#e2d3d3</color>
     <color name="text_label_color">#000000</color>
     <color name="tool_bar">#7986cb</color>
+    <color name="card_background">#c0cfd2</color>
 </resources>

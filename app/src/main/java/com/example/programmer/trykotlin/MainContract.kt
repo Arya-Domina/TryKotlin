@@ -1,5 +1,6 @@
 package com.example.programmer.trykotlin
 
+import com.example.programmer.trykotlin.model.RepoUserModel
 import com.example.programmer.trykotlin.model.UserModel
 
 class MainContract {
@@ -23,5 +24,6 @@ class MainContract {
 
         fun update()
 
+        fun getRepo(): RepoUserModel
     }
 }
