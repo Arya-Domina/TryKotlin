@@ -3,8 +3,8 @@ package com.example.programmer.trykotlin
 import com.example.programmer.trykotlin.model.RepoUserModel
 import com.example.programmer.trykotlin.model.UserModel
 
-class MainContract {
-    interface View: BaseView<Presenter> {
+interface MainContract {
+    interface View: BaseView {
 
         fun showListUsers(listUserModel: List<UserModel>)
 

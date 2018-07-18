@@ -10,7 +10,6 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import com.example.programmer.trykotlin.App
 import com.example.programmer.trykotlin.MainContract
 import com.example.programmer.trykotlin.MainPresenter
 import com.example.programmer.trykotlin.R
@@ -19,14 +18,9 @@ import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
 class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout.OnRefreshListener*/{
 
-//    private val userRepo = RepoUserModel()
-    private var recycler: RecyclerView? = null
-    private lateinit var presenter: MainContract.Presenter
-
-
-    override fun setPresenter(presenter: MainContract.Presenter) {
-        this.presenter = presenter
-    }
+    private val recycler: RecyclerView by lazy { return@lazy findViewById<RecyclerView>(R.id.recycler_view) }
+    private val presenter: MainContract.Presenter by lazy {
+        return@lazy MainPresenter(this) }
 
     override fun showListUsers(listUserModel: List<UserModel>) {
         listUserModel.forEach{ println(it.toString())}
@@ -38,13 +32,11 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
     }
 
     override fun updateList() {
-        recycler?.adapter = UserListAdapter(this, presenter.getRepo())
-//        recycler?.adapter = UserListAdapter(this, presenter.getList())
+        recycler.adapter = UserListAdapter(this, presenter.getRepo())
     }
 
     override fun start() {
-        recycler?.adapter = UserListAdapter(this, presenter.getRepo())
-//        recycler?.adapter = UserListAdapter(this, presenter.getList())
+        recycler.adapter = UserListAdapter(this, presenter.getRepo())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +44,8 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         println("onCreate")
-        App.initApi()
 
-        recycler = findViewById(R.id.recycler_view)
-        recycler?.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = LinearLayoutManager(this)
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
 
@@ -68,7 +58,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
         findViewById<Button>(R.id.button_f).setOnClickListener {
             presenter.update()
         }
-        setPresenter(MainPresenter(this))
+
         presenter.start()
 
     }
