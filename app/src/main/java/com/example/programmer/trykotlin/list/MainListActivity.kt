@@ -1,4 +1,4 @@
-package com.example.programmer.trykotlin.ui.list
+package com.example.programmer.trykotlin.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,18 +11,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import com.example.programmer.trykotlin.Constants
-import com.example.programmer.trykotlin.MainContract
-import com.example.programmer.trykotlin.MainPresenter
 import com.example.programmer.trykotlin.R
+import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
-import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
-class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout.OnRefreshListener*/{
+class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefreshLayout.OnRefreshListener*/ {
 
     private val recycler: RecyclerView by lazy {
         return@lazy findViewById<RecyclerView>(R.id.recycler_view) }
-    private val presenter: MainContract.Presenter by lazy {
-        return@lazy MainPresenter(this) }
+    private val presenter: UserListContract.Presenter by lazy {
+        return@lazy UserListPresenter(this)
+    }
 
     override fun showListUsers(listUserModel: List<UserModel>) {
         listUserModel.forEach{ println(it.toString())}
@@ -30,7 +29,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
     }
 
     override fun showOneUser(userModel: UserModel) {
-        println("MainActivity showOneUser")
+        println("MainListActivity showOneUser")
         println(userModel)
         startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, userModel))
     }
@@ -94,7 +93,7 @@ class MainActivity: AppCompatActivity(), MainContract.View/*, SwipeRefreshLayout
                 println("onQueryTextSubmit $query")
 
 //                userRepo.requestSearch(query)
-//                recycler?.adapter = UserListAdapter(this@MainActivity, userRepo.getUserList()) //?
+//                recycler?.adapter = UserListAdapter(this@MainListActivity, userRepo.getUserList()) //?
                 presenter.update()
                 return false
             }

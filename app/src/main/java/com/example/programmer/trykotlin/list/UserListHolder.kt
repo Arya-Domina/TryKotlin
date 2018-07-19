@@ -1,4 +1,4 @@
-package com.example.programmer.trykotlin.ui.list
+package com.example.programmer.trykotlin.list
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.TextView
 import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
+import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
-import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
 class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var login: TextView = itemView.findViewById(R.id.login)

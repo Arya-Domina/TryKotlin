@@ -1,16 +1,11 @@
-package com.example.programmer.trykotlin.ui.list
+package com.example.programmer.trykotlin.list
 
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
-import com.example.programmer.trykotlin.model.RepoUserModel
 import com.example.programmer.trykotlin.model.UserModel
-import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
 open class UserListAdapter(val context: Context, var list: List<UserModel>) : RecyclerView.Adapter<UserListHolder>() {
 

@@ -1,9 +1,11 @@
-package com.example.programmer.trykotlin
+package com.example.programmer.trykotlin.list
 
+import com.example.programmer.trykotlin.BasePresenter
+import com.example.programmer.trykotlin.BaseView
 import com.example.programmer.trykotlin.model.RepoUserModel
 import com.example.programmer.trykotlin.model.UserModel
 
-interface MainContract {
+interface UserListContract {
     interface View: BaseView {
 
         fun showListUsers(listUserModel: List<UserModel>)
@@ -19,8 +21,6 @@ interface MainContract {
         fun request()
 
         fun getList(): List<UserModel>
-
-        fun getUser(id: Int): UserModel?
 
         fun update()
 
