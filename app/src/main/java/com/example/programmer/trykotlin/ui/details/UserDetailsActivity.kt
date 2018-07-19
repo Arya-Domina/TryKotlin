@@ -23,10 +23,6 @@ class UserDetailsActivity: AppCompatActivity() {
     private fun makeMapFromUser(userModel: UserModel) : Map<Int, String> {
         val map = hashMapOf<Int, String>()
 
-//        val map = hashMapOf<String, Int>()
-//        map.put("one", 1)
-//        map.put("two", 2)
-//
 //        for ((key, value) in map) {
 //            println("key = $key, value = $value")
 //        }
@@ -45,37 +41,18 @@ class UserDetailsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_details)
-        val user = intent.getSerializableExtra(USER) as UserModel
+        println("UserDetailsActivity onCreate")
+        val user = intent.getSerializableExtra(USER) as UserModel?
         println(user)
 
         val layout = findViewById<LinearLayout>(R.id.list)
+//        if (user != null)
+//            for ((key, value) in makeMapFromUser(user)) {
+//                layout.addView(PairTextView(this, key, value))
+//            }
+        user?.let { for ((key, value) in makeMapFromUser(it))
+            layout.addView(PairTextView(this, key, value))}
+                ?: println("no user is UserDetailsActivity")
 
-        for ((key, value) in makeMapFromUser(user)) {
-            layout.addView(PairTextView(this, key, value))
-        }
-
-//        val recyclerView = findViewById<RecyclerView>(R.id.pair_recycler_view)
-//        recyclerView.adapter = PairUserDetailsAdapter(this, makeMapFromUser(user))
-
-
-//        val pairLogin = PairTextView(this, R.string.login, user.login)
-//        layout.addView(pairLogin)
-//        layout.addView(PairTextView(this, R.string.name, if (user.name != null) user.name else "no name"))
-//        layout.addView(PairTextView(this, R.string.email, if (user.email != null) user.email else "no email"))
-//        layout.addView(PairTextView(this, R.string.company, if (user.company != null) user.company else "no company"))
-//        layout.addView(PairTextView(this, R.string.repos, if (user.repositoriesCount != null) user.repositoriesCount.toString() else "no repos"))
-
-
-//        val pairName = PairTextView(this, R.string.name, user.name)
-//        layout.addView(pairName)
-//        val pairEmail = PairTextView(this, R.string.email, user.email)
-//        layout.addView(pairEmail)
-//        val pairCompany = PairTextView(this, R.string.company, user.company)
-//        layout.addView(pairCompany)
-//        val pairRepos = PairTextView(this, R.string.repos, user.repositoriesCount.toString())
-//        layout.addView(pairRepos)
-
-
-//        layout.setOnClickListener{}
     }
 }

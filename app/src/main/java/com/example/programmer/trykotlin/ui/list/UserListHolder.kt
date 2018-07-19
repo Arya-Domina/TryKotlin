@@ -1,10 +1,13 @@
 package com.example.programmer.trykotlin.ui.list
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
+import com.example.programmer.trykotlin.ui.details.UserDetailsActivity
 
 class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var login: TextView = itemView.findViewById(R.id.login)
@@ -22,10 +25,11 @@ class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(user: UserModel) {
         login.text = user.login
         imageUrl.text = user.avatarUrl
-//        itemView.setOnClickListener{
-//            println("click $user")
-//            itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(USER, user))
-//        }
+        itemView.setOnClickListener{
+            println("click $user")
+//            startActivity(itemView.context, Intent(itemView.context, UserDetailsActivity::class.java).putExtra(Constants.USER, user))
+            itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(Constants.USER, user))
+        }
     }
 
     fun bindOnClick(l: View.OnClickListener) {

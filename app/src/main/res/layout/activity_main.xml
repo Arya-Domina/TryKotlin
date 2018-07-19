@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_p"
         android:layout_toStartOf="@+id/button_p"
+        android:layout_marginEnd="8dp"
         android:text="@string/pusch" />
 
     <android.support.v7.widget.RecyclerView
