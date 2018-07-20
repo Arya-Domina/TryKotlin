@@ -25,6 +25,17 @@ class RepoUserModel {
         userList = users
     }
 
+    fun saveUserById(userModel: UserModel) {
+        userList.find { it.id == userModel.id }?.let {
+            it.name = userModel.name
+            it.email = userModel.email
+            it.company = userModel.company
+            it.repositoriesCount = userModel.repositoriesCount
+            it.hasDetails = true
+        }
+                ?: println("saveUserById not found")
+    }
+
     fun saveUser(user: UserModel, position: Int) {
         if (userList[position].id == user.id) {
             userList[position].name = user.name

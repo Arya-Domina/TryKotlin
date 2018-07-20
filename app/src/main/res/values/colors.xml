@@ -8,4 +8,7 @@
     <color name="text_label_color">#000000</color>
     <color name="tool_bar">#7986cb</color>
     <color name="card_background">#c0cfd2</color>
+    <color name="icon_error">#444444</color>
+    <color name="icon_error_eye">#b3b3b3</color>
+    <color name="icon_head">#ffffff</color>
 </resources>

@@ -2,10 +2,12 @@ package com.example.programmer.trykotlin.details
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.programmer.trykotlin.Constants.Companion.USER
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
+import com.squareup.picasso.Picasso
 
 class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
 
@@ -14,6 +16,9 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
     }
     private val layout by lazy {
         findViewById<LinearLayout>(R.id.list)
+    }
+    private val imageView by lazy {
+        findViewById<ImageView>(R.id.image)
     }
 
     override fun start() {
@@ -37,6 +42,8 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
         user?.let {
             for ((key, value) in makeMapFromUser(it))
                 layout.addView(PairTextView(this, key, value))
+
+            Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
         }
                 ?: println("no user is UserDetailsActivity")
     }
@@ -51,10 +58,13 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
         val user = intent.getSerializableExtra(USER) as UserModel?
         println("UserDetailsActivity onCreate user $user")
 
-        user?.login?.let {
-            presenter.getUsver(it)
-        }
-                ?: println("no user or login")
+        if (user?.hasDetails == true) {
+            println("has details")
+            bindUsver(user)
+        } else
+            user?.login?.let {
+                presenter.getUsver(it)
+            } ?: println("no user or login")
 
     }
 }

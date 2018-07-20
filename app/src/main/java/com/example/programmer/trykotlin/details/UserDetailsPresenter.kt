@@ -13,6 +13,7 @@ class UserDetailsPresenter(private val view: UserDetailsContract.View) : UserDet
     override fun getUsver(username: String) {
         RepoUserModel.instance.getUserDetailsOb(username).subscribe({
             view.bindUsver(it)
+            RepoUserModel.instance.saveUserById(it)
         })
     }
 }

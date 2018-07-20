@@ -14,6 +14,7 @@ import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
+import com.squareup.picasso.Picasso
 
 class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefreshLayout.OnRefreshListener*/ {
 
@@ -48,6 +49,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         println("onCreate")
+        Picasso.get().setIndicatorsEnabled(true)
 
         recycler.layoutManager = LinearLayoutManager(this)
         val snapHelper = LinearSnapHelper()
