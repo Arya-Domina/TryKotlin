@@ -25,8 +25,8 @@ interface UserListContract {
         fun update()
 
         fun getRepo(): RepoUserModel
-        fun getUsver()
+
         fun printUsers()
-        fun getAllUsersDetails()
+
     }
 }

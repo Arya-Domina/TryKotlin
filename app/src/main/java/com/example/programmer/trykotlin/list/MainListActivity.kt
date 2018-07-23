@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
@@ -22,6 +23,10 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
         return@lazy findViewById<RecyclerView>(R.id.recycler_view) }
     private val presenter: UserListContract.Presenter by lazy {
         return@lazy UserListPresenter(this)
+    }
+
+    override fun getView(): View {
+        return recycler
     }
 
     override fun showListUsers(listUserModel: List<UserModel>) {
@@ -56,19 +61,14 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
         snapHelper.attachToRecyclerView(recycler)
 
         findViewById<Button>(R.id.button_p).setOnClickListener {
-//            userRepo.requestAllUsers()
-//            recycler?.adapter = UserListAdapter(this, userRepo.getUserList()) //?
-            presenter.printUsers()
-//            presenter.request()
+            //            presenter.printUsers()
+            presenter.start()
         }
         findViewById<Button>(R.id.button_f).setOnClickListener {
-//            presenter.update()
-            println("pusch")
-            presenter.getUsver()
+            startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, UserModel("mojtabahqwe")))
         }
 
         presenter.start()
-//        presenter.getAllUsersDetails()
 
     }
 

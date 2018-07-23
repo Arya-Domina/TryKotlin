@@ -25,6 +25,10 @@ class RepoUserModel {
         userList = users
     }
 
+    fun getUserByUsername(username: String): UserModel? {
+        return userList.find { it.login == username }
+    }
+
     fun saveUserById(userModel: UserModel) {
         userList.find { it.id == userModel.id }?.let {
             it.name = userModel.name
@@ -49,7 +53,7 @@ class RepoUserModel {
 
     fun printString() = userList.forEach { println(it.toString())}
 
-    fun getUserDetailsOb(login: String) = App.getApi().userDetailsOb(login)
+    fun requestUserDetailsOb(login: String) = App.getApi().userDetailsOb(login)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

@@ -2,6 +2,7 @@ package com.example.programmer.trykotlin.details
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.programmer.trykotlin.Constants.Companion.USER
@@ -19,6 +20,10 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
     }
     private val imageView by lazy {
         findViewById<ImageView>(R.id.image)
+    }
+
+    override fun getView(): View {
+        return layout
     }
 
     override fun start() {

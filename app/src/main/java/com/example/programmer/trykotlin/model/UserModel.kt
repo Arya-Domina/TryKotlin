@@ -28,6 +28,10 @@ class UserModel(@SerializedName("login")
                 var repositoriesCount:Int? = 0,
                 var hasDetails: Boolean = false): Serializable {
 
+    constructor() : this("", 0, "", "", "", "", 0, false)
+
+    constructor(username: String) : this(username, 0, "", "", "", "", 0, false)
+
     override fun toString(): String {
         return "{login: $login, id: $id, name: $name, avatarUrl: $avatarUrl, email: $email, company: $company, repositoriesCount: $repositoriesCount} \n"
     }
