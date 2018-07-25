@@ -1,9 +1,11 @@
 package com.example.programmer.trykotlin.model
 
 import com.example.programmer.trykotlin.App
+import com.example.programmer.trykotlin.util.ErrorHandlerHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -17,19 +19,15 @@ class RepoUserModel {
         val instance: RepoUserModel by lazy { Holder.INSTANCE }
     }
 
-    private var userList = listOf<UserModel>()
+    private var userList = listOf<UserModel>() //cache
 
     fun getUserList() = userList
 
-    fun saveUserList(users: List<UserModel>) {
-        userList = users
-    }
-
-    fun getUserByUsername(username: String): UserModel? {
+    private fun getUserByUsername(username: String): UserModel? { //from cache
         return userList.find { it.login == username }
     }
 
-    fun saveUserById(userModel: UserModel) {
+    private fun saveUserById(userModel: UserModel) { //in cache
         userList.find { it.id == userModel.id }?.let {
             it.name = userModel.name
             it.email = userModel.email
@@ -40,27 +38,67 @@ class RepoUserModel {
                 ?: println("saveUserById not found")
     }
 
-    fun saveUser(user: UserModel, position: Int) {
-        if (userList[position].id == user.id) {
-            userList[position].name = user.name
-            userList[position].email = user.email
-            userList[position].company = user.company
-            userList[position].repositoriesCount = user.repositoriesCount
-            userList[position].hasDetails = true
-        }
-        else println("user no saved, no equals id")
-    }
-
     fun printString() = userList.forEach { println(it.toString())}
 
-    fun requestUserDetailsOb(login: String) = App.getApi().userDetailsOb(login)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    private fun requestUserDetails(login: String): Observable<UserModel> =
+            App.getApi().userDetailsOb(login)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext({
+                        println("doOnNext requestUserDetails")
+                        saveUserById(it)
+                        it.hasDetails = true
+                    })
+                    .doOnError({
+                        println("doOnError requestUserDetails")
+                        ErrorHandlerHelper.showSnake(it)
+                    })
 
-    fun requestAllUsersOb() =
+
+    fun getUserDetails(username: String): Observable<UserModel> {
+        val user: UserModel? = getUserByUsername(username) // take from cache
+
+        if (user == null/* || !user.hasDetails*/) {
+            println("getUserDetails true")
+            return requestUserDetails(username)
+                    .doOnNext({
+                        //
+                        println("doOnNext getUserDetails user == null")
+                    })
+        } else {
+            println("getUserDetails false")
+            return Observable.just(user)
+                    .mergeWith(requestUserDetails(username))
+                    .doOnNext({
+                        //
+                        println("doOnNext getUserDetails user != null")
+                    })
+        }
+    }
+
+    private fun requestAllUsers(): Observable<List<UserModel>> =
             App.getApi().getUsersOb()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext({
+                        println("requestAllUsers doOnNext")
+                        userList = it
+                    })
+                    .doOnError({
+                        println("requestAllUsers doOnError")
+                        ErrorHandlerHelper.showSnake(it)
+                    })
+
+    fun getAllUsers(): Observable<List<UserModel>> {
+        return if (userList.isEmpty()) {
+            println("getAllUsers list is empty")
+            requestAllUsers()
+        } else {
+            println("getAllUsers list is not empty")
+            Observable.just(userList)
+                    .mergeWith(requestAllUsers())
+        }
+    }
 
     fun requestSearch(query: String) =
             App.getApi().searchUser(query).enqueue(object:Callback<SearchResultModel>{

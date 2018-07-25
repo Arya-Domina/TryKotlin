@@ -25,7 +25,7 @@ class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         itemView.setOnClickListener{
             println("click $user")
-            itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(Constants.USER, user))
+            itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(Constants.USER, user.login))
         }
     }
 }

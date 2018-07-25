@@ -44,17 +44,13 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
 //        recycler.adapter = UserListAdapter(this, presenter.getRepo())
     }
 
-    override fun start() {
-//        recycler.adapter = UserListAdapter(this, presenter.getRepo())
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         println("onCreate")
         Picasso.get().setIndicatorsEnabled(true)
+        start()
 
         recycler.layoutManager = LinearLayoutManager(this)
         val snapHelper = LinearSnapHelper()
@@ -65,7 +61,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
             presenter.start()
         }
         findViewById<Button>(R.id.button_f).setOnClickListener {
-            startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, UserModel("mojtabahqwe")))
+            startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, "mojtabahqwe"))
         }
 
         presenter.start()

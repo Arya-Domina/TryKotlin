@@ -6,7 +6,7 @@ import com.example.programmer.trykotlin.model.UserModel
 
 interface UserDetailsContract {
     interface View : BaseView {
-        fun bindUsver(user: UserModel?)
+        fun bindUsver(user: UserModel)
     }
 
     interface Presenter : BasePresenter {

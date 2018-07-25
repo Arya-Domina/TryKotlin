@@ -26,50 +26,39 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
         return layout
     }
 
-    override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private fun makeMapFromUser(userModel: UserModel) : Map<Int, String> {
         val map = hashMapOf<Int, String>()
 
         userModel.login?.let { map.put(R.string.login, it) }
-        map[R.string.name] = userModel.name ?: "no named"
+        if (userModel.hasDetails) {
+            map[R.string.name] = userModel.name ?: "no named"
 //        userModel.name?.let { map.put(R.string.name, it) }
-        userModel.email?.let { map.put(R.string.email, it) }
-        userModel.company?.let { map.put(R.string.company, it) }
-        userModel.repositoriesCount?.let { map.put(R.string.repos, it.toString()) }
+            userModel.email?.let { map.put(R.string.email, it) }
+            userModel.company?.let { map.put(R.string.company, it) }
+            userModel.repositoriesCount?.let { map.put(R.string.repos, it.toString()) }
+        }
 
         return map
     }
 
-    override fun bindUsver(user: UserModel?) {
-        user?.let {
-            for ((key, value) in makeMapFromUser(it))
-                layout.addView(PairTextView(this, key, value))
+    override fun bindUsver(user: UserModel) {
+        println("bindUser")
+        layout.removeAllViews()
+        for ((key, value) in makeMapFromUser(user))
+            layout.addView(PairTextView(this, key, value))
 
-            Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
-        }
-                ?: println("no user is UserDetailsActivity")
+        Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_details)
         println("UserDetailsActivity onCreate")
+        start()
 
-//        presenter.start()
-
-        val user = intent.getSerializableExtra(USER) as UserModel?
-        println("UserDetailsActivity onCreate user $user")
-
-        if (user?.hasDetails == true) {
-            println("has details")
-            bindUsver(user)
-        } else
-            user?.login?.let {
-                presenter.getUsver(it)
-            } ?: println("no user or login")
+        val username = intent.getSerializableExtra(USER) as String?
+        println("UserDetailsActivity onCreate username $username")
+        username?.let { presenter.getUsver(it) } ?: println("no login")
 
     }
 }
