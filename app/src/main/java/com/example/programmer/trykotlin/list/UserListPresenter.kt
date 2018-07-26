@@ -1,7 +1,6 @@
 package com.example.programmer.trykotlin.list
 
 import com.example.programmer.trykotlin.model.RepoUserModel
-import com.example.programmer.trykotlin.model.UserModel
 
 class UserListPresenter(private val view: UserListContract.View) : UserListContract.Presenter {
 
@@ -9,23 +8,12 @@ class UserListPresenter(private val view: UserListContract.View) : UserListContr
         RepoUserModel.instance.printString()
     }
 
-    override fun request() {
-    }
-
     override fun start() {
         RepoUserModel.instance.getAllUsers()
                 .subscribe({
+                    printUsers()
                     view.showListUsers(it)
                 }, {})
     }
-
-    override fun getList(): List<UserModel> =
-            RepoUserModel.instance.getUserList()
-
-    override fun getRepo(): RepoUserModel =
-            RepoUserModel.instance
-
-    override fun update() =
-            view.updateList()
 
 }

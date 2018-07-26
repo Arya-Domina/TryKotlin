@@ -4,24 +4,29 @@ import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.LinearLayout
 import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
+import com.example.programmer.trykotlin.details.PairTextView
 import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
 import com.squareup.picasso.Picasso
 
 class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val login: TextView = itemView.findViewById(R.id.login)
-    private val imageUrl: TextView = itemView.findViewById(R.id.image_string)
     private val imageView: ImageView = itemView.findViewById(R.id.image)
+    private val layout by lazy {
+        itemView.findViewById<LinearLayout>(R.id.fields_list)
+    }
 
     fun bind(user: UserModel) {
         println("bind user ${user.login}")
-        login.text = user.login
-        imageUrl.text = user.avatarUrl
+
+        layout.removeAllViews()
+        layout.addView(PairTextView(imageView.context, R.string.login, user.login?.let { it }
+                ?: ""))
+        layout.addView(PairTextView(imageView.context, R.string.type, user.type?.let { it } ?: ""))
+
         Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
-//        Picasso.get().load(if (adapterPosition < 15) {user.avatarUrl} else "qwe").placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
 
         itemView.setOnClickListener{
             println("click $user")

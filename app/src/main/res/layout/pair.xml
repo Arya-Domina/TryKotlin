@@ -7,8 +7,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_label_color"
-        android:text="@string/name"
-        android:hint="@string/name"
+        android:text="@string/denotation"
+        android:hint="@string/denotation"
         android:layout_margin="@dimen/text_view_margin"/>
     <TextView
         android:id="@+id/value"

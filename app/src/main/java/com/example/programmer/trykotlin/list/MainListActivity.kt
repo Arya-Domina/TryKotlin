@@ -30,18 +30,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
     }
 
     override fun showListUsers(listUserModel: List<UserModel>) {
-        listUserModel.forEach{ println(it.toString())}
-        recycler.adapter = UserListAdapter(this, listUserModel)
-    }
-
-    override fun showOneUser(userModel: UserModel) {
-        println("MainListActivity showOneUser")
-        println(userModel)
-        startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, userModel))
-    }
-
-    override fun updateList() {
-//        recycler.adapter = UserListAdapter(this, presenter.getRepo())
+        recycler.adapter = UserListAdapter(listUserModel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +81,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
 
 //                userRepo.requestSearch(query)
 //                recycler?.adapter = UserListAdapter(this@MainListActivity, userRepo.getUserList()) //?
-                presenter.update()
+//                presenter.update()
                 return false
             }
 

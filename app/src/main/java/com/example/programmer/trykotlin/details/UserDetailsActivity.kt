@@ -26,26 +26,21 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
         return layout
     }
 
-    private fun makeMapFromUser(userModel: UserModel) : Map<Int, String> {
-        val map = hashMapOf<Int, String>()
-
-        userModel.login?.let { map.put(R.string.login, it) }
-        if (userModel.hasDetails) {
-            map[R.string.name] = userModel.name ?: "no named"
-//        userModel.name?.let { map.put(R.string.name, it) }
-            userModel.email?.let { map.put(R.string.email, it) }
-            userModel.company?.let { map.put(R.string.company, it) }
-            userModel.repositoriesCount?.let { map.put(R.string.repos, it.toString()) }
-        }
-
-        return map
+    private fun add(resId: Int, value: String?) {
+        value?.let { layout.addView(PairTextView(this, resId, it)) }
     }
 
     override fun bindUsver(user: UserModel) {
-        println("bindUser")
+        println("bindUser $user")
         layout.removeAllViews()
-        for ((key, value) in makeMapFromUser(user))
-            layout.addView(PairTextView(this, key, value))
+
+        add(R.string.login, user.login)
+        if (user.hasDetails) {
+            add(R.string.name, user.name)
+            add(R.string.location, user.location)
+            add(R.string.company, user.company)
+            add(R.string.repos, user.repositoriesCount.toString())
+        }
 
         Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
     }

@@ -21,7 +21,7 @@ class RepoUserModel {
 
     private var userList = listOf<UserModel>() //cache
 
-    fun getUserList() = userList
+    fun printString() = userList.forEach { println(it.toString()) }
 
     private fun getUserByUsername(username: String): UserModel? { //from cache
         return userList.find { it.login == username }
@@ -31,6 +31,7 @@ class RepoUserModel {
         userList.find { it.id == userModel.id }?.let {
             it.name = userModel.name
             it.email = userModel.email
+            it.location = userModel.location
             it.company = userModel.company
             it.repositoriesCount = userModel.repositoriesCount
             it.hasDetails = true
@@ -38,16 +39,14 @@ class RepoUserModel {
                 ?: println("saveUserById not found")
     }
 
-    fun printString() = userList.forEach { println(it.toString())}
-
     private fun requestUserDetails(login: String): Observable<UserModel> =
             App.getApi().userDetailsOb(login)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
                         println("doOnNext requestUserDetails")
+                        it.hasDetails = true //
                         saveUserById(it)
-                        it.hasDetails = true
                     })
                     .doOnError({
                         println("doOnError requestUserDetails")

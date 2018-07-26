@@ -12,13 +12,4 @@ interface BaseView {
 
     fun getView(): View
 
-//    fun show()
-//
-//    fun hide()
-//
-//    fun update()
-
-//    fun showAllUsers()
-
-//    fun showOneUser(user: User)
 }

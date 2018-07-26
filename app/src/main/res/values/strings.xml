@@ -1,15 +1,22 @@
 <resources>
     <string name="app_name">TryKotlin</string>
     <string name="pysch">пыщ</string>
+    <string name="pusch">пущ</string>
+
+    <!--User Details Fields-->
     <string name="login">Login</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
+    <string name="location">Location</string>
     <string name="company">Company</string>
     <string name="stars">Stars count</string>
     <string name="repos">Repository count</string>
-    <string name="action_search">Search</string>
-    <string name="image_url">image Url</string>
-    <string name="image_string">image String</string>
-    <string name="pusch">пущ</string>
+    <!--User List Fields-->
+    <string name="type">Type</string>
+
+    <!--Pair-->
+    <string name="denotation">Denotation</string>
     <string name="value">Value</string>
+
+    <string name="action_search">Search</string>
 </resources>
