@@ -7,6 +7,7 @@ import com.example.programmer.trykotlin.model.UserModel
 interface UserListContract {
     interface View: BaseView {
         fun showListUsers(listUserModel: List<UserModel>)
+        fun stopRefreshing()
     }
 
     interface Presenter: BasePresenter {

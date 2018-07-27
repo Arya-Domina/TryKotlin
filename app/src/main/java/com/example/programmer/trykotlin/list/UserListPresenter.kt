@@ -13,7 +13,9 @@ class UserListPresenter(private val view: UserListContract.View) : UserListContr
                 .subscribe({
                     printUsers()
                     view.showListUsers(it)
-                }, {})
+                }, {
+                    view.stopRefreshing()
+                })
     }
 
 }

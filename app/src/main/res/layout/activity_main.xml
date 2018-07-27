@@ -6,8 +6,7 @@
     tools:context=".list.MainListActivity">
 
     <include layout="@layout/toolbar"
-        android:id="@+id/toolbar"/>
-
+        android:id="@+id/toolbar" />
 
     <Button
         android:id="@+id/button_p"
@@ -28,15 +27,28 @@
         android:layout_marginEnd="8dp"
         android:text="@string/pusch" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/empty_text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar"
         android:layout_margin="8dp"
-        android:orientation="vertical"
-        android:scrollbars="vertical"/>
+        android:text="@string/no_data_available"
+        android:visibility="gone" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="8dp"
+        android:background="@color/swipe_layout_background">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/swipe_layout_background" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

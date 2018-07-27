@@ -2,6 +2,8 @@ package com.example.programmer.trykotlin.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -11,16 +13,24 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
 import com.squareup.picasso.Picasso
 
-class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefreshLayout.OnRefreshListener*/ {
+class MainListActivity : AppCompatActivity(), UserListContract.View {
 
     private val recycler: RecyclerView by lazy {
-        return@lazy findViewById<RecyclerView>(R.id.recycler_view) }
+        return@lazy findViewById<RecyclerView>(R.id.recycler_view)
+    }
+    private val swipeRefreshLayout: SwipeRefreshLayout by lazy {
+        return@lazy findViewById<SwipeRefreshLayout>(R.id.swipe_layout)
+    }
+    private val emptyTextView: TextView by lazy {
+        return@lazy findViewById<TextView>(R.id.empty_text_view) //but it is working
+    }
     private val presenter: UserListContract.Presenter by lazy {
         return@lazy UserListPresenter(this)
     }
@@ -31,6 +41,18 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
 
     override fun showListUsers(listUserModel: List<UserModel>) {
         recycler.adapter = UserListAdapter(listUserModel)
+        if (recycler.adapter.itemCount == 0) {
+            recycler.visibility = View.GONE
+            emptyTextView.visibility = View.VISIBLE
+        } else {
+            recycler.visibility = View.VISIBLE
+            emptyTextView.visibility = View.GONE
+        }
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun stopRefreshing() {
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,19 +64,22 @@ class MainListActivity : AppCompatActivity(), UserListContract.View/*, SwipeRefr
         start()
 
         recycler.layoutManager = LinearLayoutManager(this)
+        showListUsers(listOf())
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
+        swipeRefreshLayout.setOnRefreshListener {
+            Handler().postDelayed({ presenter.start() }, 2100)
+        }
 
         findViewById<Button>(R.id.button_p).setOnClickListener {
-            //            presenter.printUsers()
-            presenter.start()
+            //            presenter.start()
         }
         findViewById<Button>(R.id.button_f).setOnClickListener {
             startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, "mojtabahqwe"))
         }
 
         presenter.start()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
