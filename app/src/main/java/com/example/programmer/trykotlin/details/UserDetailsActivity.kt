@@ -39,6 +39,7 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
             add(R.string.name, user.name)
             add(R.string.location, user.location)
             add(R.string.company, user.company)
+            add(R.string.email, user.email)
             add(R.string.repos, user.repositoriesCount.toString())
         }
 
