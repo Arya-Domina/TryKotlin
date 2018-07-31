@@ -26,7 +26,7 @@ class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 ?: ""))
         layout.addView(PairTextView(imageView.context, R.string.type, user.type?.let { it } ?: ""))
 
-        Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
+        Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon_placeholder).error(R.drawable.icon_error).into(imageView)
 
         itemView.setOnClickListener{
             println("click $user")

@@ -18,7 +18,7 @@
             android:layout_gravity="top"
             android:layout_margin="8dp"
             android:background="@color/icon_background"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/icon_placeholder" />
 
         <LinearLayout
             android:id="@+id/list"

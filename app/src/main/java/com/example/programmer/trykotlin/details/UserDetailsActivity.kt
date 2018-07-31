@@ -43,7 +43,7 @@ class UserDetailsActivity : AppCompatActivity(), UserDetailsContract.View {
             add(R.string.repos, user.repositoriesCount.toString())
         }
 
-        Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon).error(R.drawable.error).into(imageView)
+        Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon_placeholder).error(R.drawable.icon_error).into(imageView)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

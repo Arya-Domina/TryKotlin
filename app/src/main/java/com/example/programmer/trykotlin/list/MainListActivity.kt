@@ -1,5 +1,6 @@
 package com.example.programmer.trykotlin.list
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,7 @@ import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
 import com.squareup.picasso.Picasso
 
+@SuppressLint("WrongViewCast")
 class MainListActivity : AppCompatActivity(), UserListContract.View {
 
     private val recycler: RecyclerView by lazy {
@@ -29,7 +31,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         return@lazy findViewById<SwipeRefreshLayout>(R.id.swipe_layout)
     }
     private val emptyTextView: TextView by lazy {
-        return@lazy findViewById<TextView>(R.id.empty_text_view) //but it is working
+        return@lazy findViewById<TextView>(R.id.empty_text_view) //TODO but it is working
     }
     private val presenter: UserListContract.Presenter by lazy {
         return@lazy UserListPresenter(this)
@@ -44,6 +46,33 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         if (recycler.adapter.itemCount == 0) {
             recycler.visibility = View.GONE
             emptyTextView.visibility = View.VISIBLE
+            emptyTextView.setText(R.string.no_data_available)
+        } else {
+            recycler.visibility = View.VISIBLE
+            emptyTextView.visibility = View.GONE
+        }
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: String) {
+        recycler.adapter = UserListAdapter(listUserModel)
+        if (recycler.adapter.itemCount == 0) {
+            recycler.visibility = View.GONE
+            emptyTextView.visibility = View.VISIBLE
+            emptyTextView.text = textIfEmpty
+        } else {
+            recycler.visibility = View.VISIBLE
+            emptyTextView.visibility = View.GONE
+        }
+        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: Int) {
+        recycler.adapter = UserListAdapter(listUserModel)
+        if (recycler.adapter.itemCount == 0) {
+            recycler.visibility = View.GONE
+            emptyTextView.visibility = View.VISIBLE
+            emptyTextView.setText(textIfEmpty)
         } else {
             recycler.visibility = View.VISIBLE
             emptyTextView.visibility = View.GONE
@@ -64,7 +93,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         start()
 
         recycler.layoutManager = LinearLayoutManager(this)
-        showListUsers(listOf())
+        showListUsers(listOf(), "Нет доступа")
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
@@ -84,13 +113,19 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_search -> {
-            // User chose the "Settings" item, show the app settings UI...
+            println("onOptionsItemSelected search")
             true
         }
-
+        R.id.action_settings_one -> {
+            println("onOptionsItemSelected one")
+            true
+        }
+        R.id.action_settings_two -> {
+            println("onOptionsItemSelected two")
+            true
+        }
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
+            println("onOptionsItemSelected else")
             super.onOptionsItemSelected(item)
         }
     }
@@ -99,6 +134,21 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         menuInflater.inflate(R.menu.main_menu, menu)
 
         val searchItem = menu?.findItem(R.id.action_search)
+//        searchItem?.setOnActionExpandListener(object: MenuItem.OnActionExpandListener{
+//            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+//                println("onMenuItemActionExpand")
+//                searchItem.isVisible = false
+//                searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+//                return true
+//            }
+//
+//            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+//                println("onMenuItemActionCollapse")
+//                searchItem.isVisible = true
+//                searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//                return true
+//            }
+//        })
         val searchView = searchItem?.actionView as SearchView
         searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
