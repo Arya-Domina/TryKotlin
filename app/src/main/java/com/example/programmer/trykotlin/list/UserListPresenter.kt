@@ -18,4 +18,14 @@ class UserListPresenter(private val view: UserListContract.View) : UserListContr
                 })
     }
 
+    override fun search(query: String, page: Int, per_page: Int) {
+        RepoUserModel.instance.searchPage(query, page, per_page).subscribe({
+            println("presenter searchPage onNext")
+            println("totalCount ${it.totalCount}")
+            view.showListUsers(it.items, "Никого не найдено по такому запросу")
+        }, {
+            println("presenter searchPage onError")
+        })
+    }
+
 }

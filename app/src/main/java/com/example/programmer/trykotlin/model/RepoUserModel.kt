@@ -2,9 +2,6 @@ package com.example.programmer.trykotlin.model
 
 import com.example.programmer.trykotlin.App
 import com.example.programmer.trykotlin.util.ErrorHandlerHelper
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -27,7 +24,7 @@ class RepoUserModel {
         return userList.find { it.login == username }
     }
 
-    private fun saveUserById(userModel: UserModel) { //in cache
+    private fun saveUser(userModel: UserModel) { //in cache
         userList.find { it.id == userModel.id }?.let {
             it.name = userModel.name
             it.email = userModel.email
@@ -36,7 +33,7 @@ class RepoUserModel {
             it.repositoriesCount = userModel.repositoriesCount
             it.hasDetails = true
         }
-                ?: println("saveUserById not found")
+                ?: println("saveUser not found")
     }
 
     private fun requestUserDetails(login: String): Observable<UserModel> =
@@ -46,7 +43,7 @@ class RepoUserModel {
                     .doOnNext({
                         println("doOnNext requestUserDetails")
                         it.hasDetails = true //
-                        saveUserById(it)
+                        saveUser(it)
                     })
                     .doOnError({
                         println("doOnError requestUserDetails")
@@ -55,21 +52,19 @@ class RepoUserModel {
 
 
     fun getUserDetails(username: String): Observable<UserModel> {
-        val user: UserModel? = getUserByUsername(username) // take from cache
+        val user: UserModel? = getUserByUsername(username)
 
-        if (user == null/* || !user.hasDetails*/) {
+        return if (user == null) {
             println("getUserDetails true")
-            return requestUserDetails(username)
+            requestUserDetails(username)
                     .doOnNext({
-                        //
                         println("doOnNext getUserDetails user == null")
                     })
         } else {
             println("getUserDetails false")
-            return Observable.just(user)
+            Observable.just(user)
                     .mergeWith(requestUserDetails(username))
                     .doOnNext({
-                        //
                         println("doOnNext getUserDetails user != null")
                     })
         }
@@ -99,19 +94,17 @@ class RepoUserModel {
         }
     }
 
-    fun requestSearch(query: String) =
-            App.getApi().searchUser(query).enqueue(object:Callback<SearchResultModel>{
-                override fun onFailure(call: Call<SearchResultModel>?, t: Throwable?) {
-                    println("searchUser onFailure")
-                    println(t)
-                }
-
-                override fun onResponse(call: Call<SearchResultModel>?, response: Response<SearchResultModel>?) {
-                    println("searchUser onResponse")
-
-                    response?.body()?.items?.let { it1 -> userList = it1}
-                }
-            })
+    fun searchPage(query: String, page: Int, per_page: Int): Observable<SearchResultModel> =
+            App.getApi().searchUserPagination(query, page, per_page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext({
+                        println("searchPage doOnNext, query: $query, page: $page, per_page: $per_page")
+                    })
+                    .doOnError({
+                        println("searchPage doOnError, query: $query, page: $page, per_page: $per_page")
+                        ErrorHandlerHelper.showSnake(it)
+                    })
 
 }
 

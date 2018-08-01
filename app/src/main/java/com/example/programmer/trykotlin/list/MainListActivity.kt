@@ -134,41 +134,31 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         menuInflater.inflate(R.menu.main_menu, menu)
 
         val searchItem = menu?.findItem(R.id.action_search)
-//        searchItem?.setOnActionExpandListener(object: MenuItem.OnActionExpandListener{
-//            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-//                println("onMenuItemActionExpand")
-//                searchItem.isVisible = false
-//                searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-//                return true
-//            }
-//
-//            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-//                println("onMenuItemActionCollapse")
-//                searchItem.isVisible = true
-//                searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-//                return true
-//            }
-//        })
+        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                println("onMenuItemActionExpand")
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                println("onMenuItemActionCollapse")
+                presenter.start()
+                return true
+            }
+        })
+
         val searchView = searchItem?.actionView as SearchView
         searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 println("onQueryTextSubmit $query")
-
-//                userRepo.requestSearch(query)
-//                recycler?.adapter = UserListAdapter(this@MainListActivity, userRepo.getUserList()) //?
-//                presenter.update()
+                presenter.search(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 println("onQueryTextChange $newText")
-
-//                (recycler?.adapter as UserListAdapter).list = userRepo.getUserList()
-//                        .filter { it.login.toLowerCase().contains(newText.toLowerCase()) }
-//                recycler?.adapter?.notifyDataSetChanged()
                 return false
             }
-
         })
         return super.onCreateOptionsMenu(menu)
     }

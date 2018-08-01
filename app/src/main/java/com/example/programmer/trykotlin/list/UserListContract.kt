@@ -15,5 +15,6 @@ interface UserListContract {
 
     interface Presenter: BasePresenter {
         fun printUsers()
+        fun search(query: String, page: Int = 1, per_page: Int = 30)
     }
 }

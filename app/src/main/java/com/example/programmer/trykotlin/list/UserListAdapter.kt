@@ -16,12 +16,4 @@ open class UserListAdapter(var list: List<UserModel>) : RecyclerView.Adapter<Use
     override fun onBindViewHolder(holder: UserListHolder, position: Int) =
             holder.bind(list[position])
 
-//    fun filter(query: String) {
-//        println("filter")
-//        list = list.filter { it.login.toLowerCase().contains(query.toLowerCase()) }
-//        notifyDataSetChanged()
-//
-//        list.forEach{ println(it.toString())}
-//    }
-
 }
