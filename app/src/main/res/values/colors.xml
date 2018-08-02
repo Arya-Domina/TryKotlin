@@ -7,6 +7,7 @@
     <color name="text_label_color">#000000</color>
     <color name="tool_bar">#7986cb</color>
     <color name="card_background">#c0cfd2</color>
+    <color name="buttons_background">#c2a7cf</color>
 
     <!--mock user icon-->
     <color name="icon_background">#e2d3d3</color>

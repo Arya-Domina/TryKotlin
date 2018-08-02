@@ -94,15 +94,15 @@ class RepoUserModel {
         }
     }
 
-    fun searchPage(query: String, page: Int, per_page: Int): Observable<SearchResultModel> =
-            App.getApi().searchUserPagination(query, page, per_page)
+    fun searchPage(query: String, page: Int, perPage: Int): Observable<SearchResultModel> =
+            App.getApi().searchUserPagination(query, page, perPage)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
-                        println("searchPage doOnNext, query: $query, page: $page, per_page: $per_page")
+                        println("searchPage doOnNext, query: $query, page: $page, perPage: $perPage")
                     })
                     .doOnError({
-                        println("searchPage doOnError, query: $query, page: $page, per_page: $per_page")
+                        println("searchPage doOnError, query: $query, page: $page, perPage: $perPage")
                         ErrorHandlerHelper.showSnake(it)
                     })
 

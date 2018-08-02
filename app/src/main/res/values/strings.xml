@@ -20,4 +20,12 @@
 
     <string name="action_search">Search</string>
     <string name="no_data_available">No data available</string>
+
+    <!--buttons-->
+    <string name="first">First</string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
+    <string name="last">Last</string>
+    <string name="start_page_state">0</string>
+
 </resources>

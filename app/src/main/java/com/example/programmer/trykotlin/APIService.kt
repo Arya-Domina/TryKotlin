@@ -15,6 +15,8 @@ interface APIService {
     fun userDetailsOb(@Path("username") userName: String): Observable<UserModel>
 
     @GET("search/users")
-    fun searchUserPagination(@Query("q") query: String, @Query("page") page: Int, @Query("per_page") per_page: Int): Observable<SearchResultModel>
+    fun searchUserPagination(@Query("q") query: String,
+                             @Query("page") page: Int,
+                             @Query("per_page") perPage: Int): Observable<SearchResultModel>
 
 }

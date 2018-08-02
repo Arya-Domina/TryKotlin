@@ -8,25 +8,6 @@
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar" />
 
-    <Button
-        android:id="@+id/button_p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/pysch" />
-
-    <Button
-        android:id="@+id/button_f"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button_p"
-        android:layout_toStartOf="@+id/button_p"
-        android:layout_marginEnd="8dp"
-        android:text="@string/pusch" />
-
     <TextView
         android:id="@+id/empty_text_view"
         android:layout_width="wrap_content"
@@ -42,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_margin="8dp"
+        android:layout_above="@id/button_bar"
         android:background="@color/swipe_layout_background">
 
         <android.support.v7.widget.RecyclerView
@@ -50,5 +32,50 @@
             android:layout_height="match_parent"
             android:background="@color/swipe_layout_background" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/buttons_background"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/first" />
+
+        <Button
+            android:id="@+id/prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/prev" />
+
+        <Button
+            android:id="@+id/current_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:clickable="false"
+            android:text="@string/start_page_state" />
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/next" />
+
+        <Button
+            android:id="@+id/last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/last" />
+    </LinearLayout>
 
 </RelativeLayout>
