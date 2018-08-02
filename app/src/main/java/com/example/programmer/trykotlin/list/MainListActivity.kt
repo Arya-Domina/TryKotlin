@@ -37,13 +37,21 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     private val currentPageButton: Button by lazy {
         return@lazy findViewById<Button>(R.id.current_page)
     }
+    private val firstButton: Button by lazy {
+        return@lazy findViewById<Button>(R.id.first)
+    }
+    private val prevButton: Button by lazy {
+        return@lazy findViewById<Button>(R.id.prev)
+    }
+    private val nextButton: Button by lazy {
+        return@lazy findViewById<Button>(R.id.next)
+    }
+    private val lastButton: Button by lazy {
+        return@lazy findViewById<Button>(R.id.last)
+    }
     private val buttonsBar: LinearLayout by lazy {
         return@lazy findViewById<LinearLayout>(R.id.button_bar)
     }
-
-    private var currentPage: Int = 0
-    private var currentLastPage: Int = 0
-    private var searchMode: Boolean = false
 
     override fun getView(): View {
         return recycler
@@ -80,13 +88,11 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     }
 
     override fun turnOnSearchMode() {
-        searchMode = true
         buttonsBar.visibility = View.VISIBLE
         swipeRefreshLayout.isEnabled = false
     }
 
     override fun turnOffSearchMode() {
-        searchMode = false
         buttonsBar.visibility = View.GONE
         swipeRefreshLayout.isEnabled = true
     }
@@ -112,47 +118,39 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         presenter.requestUsers()
     }
 
-    override fun setPage(page: Int, lastPage: Int) {
-        currentPage = page
-        currentLastPage = lastPage
-    }
-
-    override fun bindButtonsOnClick() {
-        findViewById<Button>(R.id.first).setOnClickListener {
+    override fun setButtons(page: Int, lastPage: Int) {
+        firstButton.setOnClickListener {
             println("first")
-            currentPage = 1
-            presenter.searchUsersByLastQuery(1)
+            presenter.searchUsers(page = 1)
         }
-        findViewById<Button>(R.id.prev).setOnClickListener {
+        prevButton.setOnClickListener {
             println("prev")
-            presenter.searchUsersByLastQuery(--currentPage)
+            presenter.searchUsers(page = page - 1)
         }
-        findViewById<Button>(R.id.next).setOnClickListener {
+        nextButton.setOnClickListener {
             println("next")
-            presenter.searchUsersByLastQuery(++currentPage)
+            presenter.searchUsers(page = page + 1)
         }
-        findViewById<Button>(R.id.last).setOnClickListener {
+        lastButton.setOnClickListener {
             println("last")
-            currentPage = currentLastPage
-            presenter.searchUsersByLastQuery(currentLastPage)
+            presenter.searchUsers(page = lastPage)
         }
-    }
 
-    override fun bindButtonsClickable() {
-        currentPageButton.text = currentPage.toString()
-        if (currentPage == 1) {
-            findViewById<Button>(R.id.first).isClickable = false
-            findViewById<Button>(R.id.prev).isClickable = false
+        currentPageButton.text = page.toString()
+
+        if (page == 1) {
+            firstButton.isClickable = false
+            prevButton.isClickable = false
         } else {
-            findViewById<Button>(R.id.first).isClickable = true
-            findViewById<Button>(R.id.prev).isClickable = true
+            firstButton.isClickable = true
+            prevButton.isClickable = true
         }
-        if (currentPage == currentLastPage) {
-            findViewById<Button>(R.id.last).isClickable = false
-            findViewById<Button>(R.id.next).isClickable = false
+        if (page == lastPage) {
+            lastButton.isClickable = false
+            nextButton.isClickable = false
         } else {
-            findViewById<Button>(R.id.last).isClickable = true
-            findViewById<Button>(R.id.next).isClickable = true
+            lastButton.isClickable = true
+            nextButton.isClickable = true
         }
     }
 
@@ -163,7 +161,8 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         }
         R.id.action_settings_one -> {
             println("onOptionsItemSelected one")
-            println("Query: ${presenter.getCurrentQueryForLog()}, page: $currentPage, lasPage: $currentLastPage")
+            println("Query: ${presenter.getCurrentQueryForLog()}, " +
+                    "page: ${currentPageButton.text}")
             true
         }
         R.id.action_settings_two -> {

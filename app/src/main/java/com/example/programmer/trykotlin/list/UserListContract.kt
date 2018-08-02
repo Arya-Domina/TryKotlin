@@ -11,9 +11,7 @@ interface UserListContract {
         fun stopRefreshing()
         fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: String)
         fun showListUsers(listUserModel: List<UserModel>, @StringRes textIfEmpty: Int = R.string.no_data_available)
-        fun bindButtonsClickable()
-        fun bindButtonsOnClick()
-        fun setPage(page: Int, lastPage: Int)
+        fun setButtons(page: Int, lastPage: Int)
         fun turnOnSearchMode()
         fun turnOffSearchMode()
     }
@@ -21,8 +19,7 @@ interface UserListContract {
     interface Presenter: BasePresenter {
         fun printUsers()
         fun requestUsers()
-        fun searchUsers(query: String, page: Int = 1, perPage: Int = 30)
-        fun searchUsersByLastQuery(page: Int = 1, perPage: Int = 30)
+        fun searchUsers(query: String? = null, page: Int = 1, perPage: Int = 30)
         fun getCurrentQueryForLog(): String
     }
 }
