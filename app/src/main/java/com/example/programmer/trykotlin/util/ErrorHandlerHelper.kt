@@ -2,6 +2,9 @@ package com.example.programmer.trykotlin.util
 
 import android.support.design.widget.Snackbar
 import android.view.View
+import com.example.programmer.trykotlin.R
+import retrofit2.HttpException
+import java.net.UnknownHostException
 
 class ErrorHandlerHelper {
     companion object {
@@ -11,26 +14,43 @@ class ErrorHandlerHelper {
             currentView = view
         }
 
-        fun showSnake(errorText: String) {
-            currentView?.let { Snackbar.make(it, errorText, Snackbar.LENGTH_LONG).show() }
-        }
-
         fun showSnake(t: Throwable) {
 
-//            val errorText: String = when (t) {
-//                is UnknownHostException -> {
-//                    "Нет сети"
-//                }
-//                is HttpException -> { //404
-//                    "Нет юзера"
-//                }
-//                else -> {
-//                    "Непонятная ошибка " + t.message
-//                }
-//            }
-//            currentView?.let { Snackbar.make(it, errorText, Snackbar.LENGTH_LONG).show() }
-            currentView?.let {
-                Snackbar.make(it, t.message?.let { it } ?: "", Snackbar.LENGTH_LONG).show()
+            when (t) {
+                is UnknownHostException -> {
+                    currentView?.let {
+                        Snackbar.make(it, it.context.getString(R.string.error_no_connection), Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                is HttpException -> {
+                    when (t.code()) {
+                        401 -> {
+                            currentView?.let {
+                                Snackbar.make(it, it.context.getString(R.string.error_401), Snackbar.LENGTH_LONG)
+                                        .setAction("now", { _ ->
+                                            val helper = AlertDialogHelper()
+                                            helper.showGetterToken(it.context)
+                                        })
+                                        .show()
+                            }
+                        }
+                        404 -> {
+                            currentView?.let {
+                                Snackbar.make(it, it.context.getString(R.string.error_404), Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                        else -> {
+                            currentView?.let {
+                                Snackbar.make(it, t.message ?: "", Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    currentView?.let {
+                        Snackbar.make(it, t.message ?: "", Snackbar.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }

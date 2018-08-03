@@ -18,6 +18,23 @@
     <string name="denotation">Denotation</string>
     <string name="value">Value</string>
 
-    <string name="action_search">Search</string>
+    <!--Action settings menu-->
+    <string name="logging">Logging</string>
+    <string name="enter_token">Enter access token</string>
+    <string name="show_token">Show current token</string>
+
+    <!--Alert Dialogs-->
+    <string name="ok">OK</string>
+    <string name="save">Save</string>
+    <string name="current_token_title">Current access token</string>
+    <string name="enter_token_title">Enter access token</string>
+    <string name="enter_token_message">You can enter an access token to get additional information.</string>
+
+    <!--SnackBar Error Handler-->
     <string name="no_data_available">No data available</string>
+    <string name="error_401">Wrong token</string>
+    <string name="error_404">Нет пользователя</string>
+    <string name="error_no_connection">Нет сети</string>
+
+    <string name="action_search">Search</string>
 </resources>
