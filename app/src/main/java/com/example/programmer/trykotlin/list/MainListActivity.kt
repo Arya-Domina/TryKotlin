@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
+import com.example.programmer.trykotlin.util.AlertDialogHelper
 import com.squareup.picasso.Picasso
 
 @SuppressLint("WrongViewCast")
@@ -159,14 +160,20 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
             println("onOptionsItemSelected search")
             true
         }
-        R.id.action_settings_one -> {
-            println("onOptionsItemSelected one")
-            println("Query: ${presenter.getCurrentQueryForLog()}, " +
-                    "page: ${currentPageButton.text}")
+        R.id.action_settings_logging -> {
+            println("logging something")
             true
         }
-        R.id.action_settings_two -> {
-            println("onOptionsItemSelected two")
+        R.id.action_settings_set_token -> {
+            println("set access token")
+            val helper = AlertDialogHelper()
+            helper.showGetterToken(this)
+            true
+        }
+        R.id.action_settings_get_token -> {
+            println("get access token")
+            val helper = AlertDialogHelper()
+            helper.showShowerToken(this)
             true
         }
         else -> {
