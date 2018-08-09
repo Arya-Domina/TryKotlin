@@ -1,7 +1,6 @@
 package com.example.programmer.trykotlin.list
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -15,9 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.example.programmer.trykotlin.Constants
 import com.example.programmer.trykotlin.R
-import com.example.programmer.trykotlin.details.UserDetailsActivity
 import com.example.programmer.trykotlin.model.UserModel
 import com.example.programmer.trykotlin.util.AlertDialogHelper
 import com.squareup.picasso.Picasso
@@ -40,19 +37,6 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
 
     override fun getView(): View {
         return recycler
-    }
-
-    override fun showListUsers(listUserModel: List<UserModel>) {
-        recycler.adapter = UserListAdapter(listUserModel)
-        if (recycler.adapter.itemCount == 0) {
-            recycler.visibility = View.GONE
-            emptyTextView.visibility = View.VISIBLE
-            emptyTextView.setText(R.string.no_data_available)
-        } else {
-            recycler.visibility = View.VISIBLE
-            emptyTextView.visibility = View.GONE
-        }
-        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: String) {
@@ -81,6 +65,10 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         swipeRefreshLayout.isRefreshing = false
     }
 
+    override fun addNewUsers(newUserList: List<UserModel>) {
+        (recycler.adapter as UserListAdapter).addNewUsers(newUserList)
+    }
+
     override fun stopRefreshing() {
         swipeRefreshLayout.isRefreshing = false
     }
@@ -103,10 +91,10 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         }
 
         findViewById<Button>(R.id.button_p).setOnClickListener {
-            //            presenter.start()
+            presenter.getNewUsers()
         }
         findViewById<Button>(R.id.button_f).setOnClickListener {
-            startActivity(Intent(this, UserDetailsActivity::class.java).putExtra(Constants.USER, "mojtabahqwe"))
+            (recycler.adapter as UserListAdapter).addNewTestUsers()
         }
 
         presenter.start()
