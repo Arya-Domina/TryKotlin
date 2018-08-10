@@ -2,7 +2,7 @@ package com.example.programmer.trykotlin.list
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -15,6 +15,7 @@ import android.widget.TextView
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
 import com.example.programmer.trykotlin.util.AlertDialogHelper
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
 import com.squareup.picasso.Picasso
 
 @SuppressLint("WrongViewCast")
@@ -23,8 +24,8 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     private val recycler: RecyclerView by lazy {
         return@lazy findViewById<RecyclerView>(R.id.recycler_view)
     }
-    private val swipeRefreshLayout: SwipeRefreshLayout by lazy {
-        return@lazy findViewById<SwipeRefreshLayout>(R.id.swipe_layout)
+    private val refreshLayout: SwipyRefreshLayout by lazy {
+        return@lazy findViewById<SwipyRefreshLayout>(R.id.swipe_layout)
     }
     private val emptyTextView: TextView by lazy {
         return@lazy findViewById<TextView>(R.id.empty_text_view) //TODO but it is working
@@ -45,7 +46,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         } else {
             addNewUsers(listUserModel)
         }
-        swipeRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     override fun setEmpty(textIfEmpty: Int) {
@@ -62,11 +63,11 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
             setScrollListener()
             (recycler.adapter as UserListAdapter).addNewUsers(newUserList)
         }
-        swipeRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     override fun stopRefreshing() {
-        swipeRefreshLayout.isRefreshing = false
+        refreshLayout.isRefreshing = false
     }
 
     override fun clean() {
@@ -76,25 +77,30 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
 
     private fun setScrollListener() {
         println("setScrollListener")
-        val listener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-//                println("dx $dx, dy $dy")
-                val lastItemPosition = (recycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-
-                if (lastItemPosition > recycler.adapter.itemCount - 3) {
-                    println("recycler onScrolled get")
-                    if (isSearchMode)
-                        presenter.search()
-                    else
-                        presenter.requestNewUsers()
-                    recycler.removeOnScrollListener(this)
-                }
-            }
-        }
 
         recycler.removeOnScrollListener(listener)
         recycler.addOnScrollListener(listener)
+    }
+
+    private val listener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+//            println("dx $dx, dy $dy")
+            refresh()
+        }
+    }
+
+    private fun refresh() {
+        val lastItemPosition = (recycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
+        if (lastItemPosition > recycler.adapter.itemCount - 3) {
+            println("refresh onScrolled get")
+            if (isSearchMode)
+                presenter.search()
+            else
+                presenter.requestNewUsers()
+            recycler.removeOnScrollListener(listener)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,16 +115,14 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         recycler.layoutManager = LinearLayoutManager(this)
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
-//        TODO() swipeRefreshLayout наоборот, запрос новых данных при свайпе вниз
-        swipeRefreshLayout.isEnabled = false
-//        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
-//        swipeRefreshLayout.setOnRefreshListener {
-//            Handler().postDelayed({
-////                presenter.start()
-//                presenter.requestNewUsers()
-//            }, 2100)
-//        }
-        presenter.requestNewUsers()
+        refreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
+        refreshLayout.setOnRefreshListener {
+            // set, where was error
+            Handler().postDelayed({
+                refresh()
+            }, 2100)
+        }
+        presenter.requestNewUsers() //if not null, get current
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
