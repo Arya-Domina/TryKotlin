@@ -2,7 +2,6 @@ package com.example.programmer.trykotlin.list
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -12,7 +11,6 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
@@ -39,38 +37,64 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         return recycler
     }
 
-    override fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: String) {
-        recycler.adapter = UserListAdapter(listUserModel)
-        if (recycler.adapter.itemCount == 0) {
-            recycler.visibility = View.GONE
-            emptyTextView.visibility = View.VISIBLE
-            emptyTextView.text = textIfEmpty
+    var isSearchMode = false
+
+    override fun showListUsersSearch(listUserModel: List<UserModel>, textIfEmpty: Int) {
+        if (listUserModel.isEmpty()) {
+            setEmpty(R.string.not_found)
         } else {
-            recycler.visibility = View.VISIBLE
-            emptyTextView.visibility = View.GONE
+            addNewUsers(listUserModel)
         }
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun showListUsers(listUserModel: List<UserModel>, textIfEmpty: Int) {
-        recycler.adapter = UserListAdapter(listUserModel)
-        if (recycler.adapter.itemCount == 0) {
-            recycler.visibility = View.GONE
-            emptyTextView.visibility = View.VISIBLE
-            emptyTextView.setText(textIfEmpty)
-        } else {
-            recycler.visibility = View.VISIBLE
-            emptyTextView.visibility = View.GONE
-        }
-        swipeRefreshLayout.isRefreshing = false
+    override fun setEmpty(textIfEmpty: Int) {
+        recycler.adapter = UserListAdapter(listOf())
+        recycler.visibility = View.GONE
+        emptyTextView.visibility = View.VISIBLE
+        emptyTextView.setText(textIfEmpty)
     }
 
     override fun addNewUsers(newUserList: List<UserModel>) {
-        (recycler.adapter as UserListAdapter).addNewUsers(newUserList)
+        if (newUserList.isNotEmpty()) {
+            emptyTextView.visibility = View.GONE
+            recycler.visibility = View.VISIBLE
+            setScrollListener()
+            (recycler.adapter as UserListAdapter).addNewUsers(newUserList)
+        }
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun stopRefreshing() {
         swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun clean() {
+        recycler.adapter = UserListAdapter(listOf())
+        recycler.adapter.notifyDataSetChanged()
+    }
+
+    private fun setScrollListener() {
+        println("setScrollListener")
+        val listener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+//                println("dx $dx, dy $dy")
+                val lastItemPosition = (recycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
+                if (lastItemPosition > recycler.adapter.itemCount - 3) {
+                    println("recycler onScrolled get")
+                    if (isSearchMode)
+                        presenter.search()
+                    else
+                        presenter.requestNewUsers()
+                    recycler.removeOnScrollListener(this)
+                }
+            }
+        }
+
+        recycler.removeOnScrollListener(listener)
+        recycler.addOnScrollListener(listener)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,24 +104,21 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         println("onCreate")
         Picasso.get().setIndicatorsEnabled(true)
         start()
+        setEmpty(R.string.no_access)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        showListUsers(listOf(), "Нет доступа")
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recycler)
-        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
-        swipeRefreshLayout.setOnRefreshListener {
-            Handler().postDelayed({ presenter.start() }, 2100)
-        }
-
-        findViewById<Button>(R.id.button_p).setOnClickListener {
-            presenter.getNewUsers()
-        }
-        findViewById<Button>(R.id.button_f).setOnClickListener {
-            (recycler.adapter as UserListAdapter).addNewTestUsers()
-        }
-
-        presenter.start()
+//        TODO() swipeRefreshLayout наоборот, запрос новых данных при свайпе вниз
+        swipeRefreshLayout.isEnabled = false
+//        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
+//        swipeRefreshLayout.setOnRefreshListener {
+//            Handler().postDelayed({
+////                presenter.start()
+//                presenter.requestNewUsers()
+//            }, 2100)
+//        }
+        presenter.requestNewUsers()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -134,12 +155,16 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 println("onMenuItemActionExpand")
+                isSearchMode = true
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 println("onMenuItemActionCollapse")
-                presenter.start()
+                isSearchMode = false
+                clean()
+                setEmpty(R.string.no_access)
+                addNewUsers(presenter.getCurrentUsers())
                 return true
             }
         })

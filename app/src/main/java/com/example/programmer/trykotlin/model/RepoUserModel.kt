@@ -18,13 +18,9 @@ class RepoUserModel {
 
     private var userList = listOf<UserModel>() //cache
 
-//    private fun addUsers(newUsers: List<UserModel>) {
-//        println("addUsers old list")
-//        printString()
-//        userList.toMutableList().addAll(newUsers)
-//        println("addUsers new list")
-//        printString()
-//    }
+    fun getList() = userList
+
+    private var searchList = SearchResultModel()
 
     private fun zip(old: List<UserModel>, new: List<UserModel>): List<UserModel> { //without replace edited users
         val res = mutableListOf<UserModel>()
@@ -53,7 +49,7 @@ class RepoUserModel {
     }
 
     private fun requestUserDetails(login: String): Observable<UserModel> =
-            App.getApi().userDetailsOb(login)
+            App.getApi().userDetails(login)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
@@ -85,43 +81,29 @@ class RepoUserModel {
         }
     }
 
-    fun getAllUsers(): Observable<List<UserModel>> =
-            Observable.just(userList)
-                    .mergeWith(App.getApi().getUsersOb())
+    fun searchNewUsers(query: String, page: Int): Observable<SearchResultModel> =
+            App.getApi().searchUserPagination(query, page)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
-                        println("getAllUsers doOnNext")
-//                        userList = it
-                        userList = zip(userList, it)
-                        //addUsers
+                        println("searchNewUsers doOnNext, query: $query, page: $page")
+                        val l = searchList.items.toMutableList()
+                        it.items.forEach({ l.add(it) })
+                        searchList.items = l.toList()
                     })
                     .doOnError({
-                        println("getAllUsers doOnError")
-                        ErrorHandlerHelper.showSnake(it)
-                    })
-
-    fun searchPage(query: String, page: Int, per_page: Int): Observable<SearchResultModel> =
-            App.getApi().searchUserPagination(query, page, per_page)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext({
-                        println("searchPage doOnNext, query: $query, page: $page, per_page: $per_page")
-                    })
-                    .doOnError({
-                        println("searchPage doOnError, query: $query, page: $page, per_page: $per_page")
+                        println("searchNewUsers doOnError, query: $query, page: $page")
                         ErrorHandlerHelper.showSnake(it)
                     })
 
     fun getNewUsers(): Observable<List<UserModel>> {
-        return App.getApi().getUsersSince(userList.last().id ?: 0)
+        return App.getApi().getUsersSince(if (!userList.isEmpty()) userList.last().id ?: 0 else 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext({
                     println("getNewUsers")
                     printString(it)
                     userList = zip(userList, it)
-//                    addUsers(it)
                 })
                 .doOnError({ErrorHandlerHelper.showSnake(it)})
     }

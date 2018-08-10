@@ -16,15 +16,15 @@ open class UserListAdapter(var list: List<UserModel>) : RecyclerView.Adapter<Use
     override fun onBindViewHolder(holder: UserListHolder, position: Int) =
             holder.bind(list[position], position)
 
-    fun addNewTestUsers() { // test
-        val last = list.size
-        val newList = list.toMutableList()
-        newList.add(UserModel("Test"))
-        newList.add(UserModel("Test2"))
-        newList.add(UserModel("TT3"))
-        list = newList.toList()
-        notifyItemRangeInserted(last, 5)
-    }
+//    fun addNewTestUsers() {
+//        val last = list.size
+//        val newList = list.toMutableList()
+//        newList.add(UserModel("Test"))
+//        newList.add(UserModel("Test2"))
+//        newList.add(UserModel("TT3"))
+//        list = newList.toList()
+//        notifyItemRangeInserted(last, 5)
+//    }
 
     fun addNewUsers(newList: List<UserModel>) {
         val last = list.size

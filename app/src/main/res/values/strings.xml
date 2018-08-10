@@ -35,6 +35,8 @@
     <string name="error_401">Wrong token</string>
     <string name="error_404">Нет пользователя</string>
     <string name="error_no_connection">Нет сети</string>
+    <string name="no_access">Нет доступа</string>
+    <string name="not_found">Никого не найдено по такому запросу</string>
 
     <string name="action_search">Search</string>
 </resources>
