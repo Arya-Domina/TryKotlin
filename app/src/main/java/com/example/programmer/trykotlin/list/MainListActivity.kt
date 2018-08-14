@@ -37,46 +37,47 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     override fun getView(): View {
         return recycler
     }
-
     var isSearchMode = false
 
-    override fun showListUsersSearch(listUserModel: List<UserModel>, textIfEmpty: Int) {
-        if (listUserModel.isEmpty()) {
-            setEmpty(R.string.not_found)
-        } else {
-            addNewUsers(listUserModel)
-        }
-        refreshLayout.isRefreshing = false
-    }
-
     override fun setEmpty(textIfEmpty: Int) {
-        recycler.adapter = UserListAdapter(listOf())
+        (recycler.adapter as UserListAdapter).cleanShownUsers()
         recycler.visibility = View.GONE
         emptyTextView.visibility = View.VISIBLE
         emptyTextView.setText(textIfEmpty)
     }
 
+    override fun clean() {
+        (recycler.adapter as UserListAdapter).cleanShownUsers()
+        recycler.adapter.notifyDataSetChanged()
+
+        startSwipy()
+    }
+
     override fun addNewUsers(newUserList: List<UserModel>) {
         if (newUserList.isNotEmpty()) {
-            emptyTextView.visibility = View.GONE
+            emptyTextView.visibility = View.GONE //setRecycler
             recycler.visibility = View.VISIBLE
-            setScrollListener()
-            (recycler.adapter as UserListAdapter).addNewUsers(newUserList)
+
+            (recycler.adapter as UserListAdapter).addNewUsers(newUserList) //addNewUsers
         }
-        refreshLayout.isRefreshing = false
     }
 
     override fun stopRefreshing() {
         refreshLayout.isRefreshing = false
     }
 
-    override fun clean() {
-        recycler.adapter = UserListAdapter(listOf())
-        recycler.adapter.notifyDataSetChanged()
+    override fun stopSwipy() {
+        println("stopSwipy")
+        refreshLayout.isEnabled = false
     }
 
-    private fun setScrollListener() {
-        println("setScrollListener")
+    private fun startSwipy() {
+        println("startSwipy")
+        refreshLayout.isEnabled = true
+    }
+
+    override fun updateScrollListener() {
+        println("updateScrollListener")
 
         recycler.removeOnScrollListener(listener)
         recycler.addOnScrollListener(listener)
@@ -85,8 +86,9 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     private val listener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-//            println("dx $dx, dy $dy")
-            refresh()
+            println("dx $dx, dy $dy")
+            if (recycler.adapter.itemCount != 0)
+                refresh()
         }
     }
 
@@ -96,7 +98,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         if (lastItemPosition > recycler.adapter.itemCount - 3) {
             println("refresh onScrolled get")
             if (isSearchMode)
-                presenter.search()
+                presenter.searchNew()
             else
                 presenter.requestNewUsers()
             recycler.removeOnScrollListener(listener)
@@ -110,19 +112,18 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         println("onCreate")
         Picasso.get().setIndicatorsEnabled(true)
         start()
-        setEmpty(R.string.no_access)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(recycler)
+        recycler.adapter = UserListAdapter(listOf())
+        LinearSnapHelper().attachToRecyclerView(recycler)
         refreshLayout.setColorSchemeResources(R.color.refresh_progress_bar_1, R.color.refresh_progress_bar_2, R.color.refresh_progress_bar_3)
         refreshLayout.setOnRefreshListener {
-            // set, where was error
             Handler().postDelayed({
                 refresh()
             }, 2100)
         }
-        presenter.requestNewUsers() //if not null, get current
+
+        presenter.start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -160,6 +161,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 println("onMenuItemActionExpand")
                 isSearchMode = true
+                clean()
                 return true
             }
 
@@ -167,8 +169,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
                 println("onMenuItemActionCollapse")
                 isSearchMode = false
                 clean()
-                setEmpty(R.string.no_access)
-                addNewUsers(presenter.getCurrentUsers())
+                presenter.start()
                 return true
             }
         })

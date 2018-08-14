@@ -13,13 +13,11 @@ class AlertDialogHelper {
 
     fun showGetterToken(context: Context) {
         val editText = EditText(context)
-//        editText.setPadding(50, 20, 50, 0)
-//        editText.setBackgroundColor(context.resources.getColor(R.color.swipe_layout_background))
         AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.enter_token_title))
-                .setMessage(context.getString(R.string.enter_token_message)) // such as user email
+                .setMessage(context.getString(R.string.enter_token_message))
                 .setView(editText)
-                .setPositiveButton(context.getString(R.string.save), { dialog, which ->
+                .setPositiveButton(context.getString(R.string.save), { _, _ ->
                     println("showGetterToken, inputting text: ${editText.text}")
                     PreferenceManager.getDefaultSharedPreferences(App.context).edit()
                             .putString(Constants.HEADER_VALUE, editText.text.toString()).apply()

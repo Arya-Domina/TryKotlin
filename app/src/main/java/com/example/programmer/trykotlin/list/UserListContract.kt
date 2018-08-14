@@ -9,17 +9,19 @@ import com.example.programmer.trykotlin.model.UserModel
 interface UserListContract {
     interface View: BaseView {
         fun stopRefreshing()
-        fun showListUsersSearch(listUserModel: List<UserModel>, @StringRes textIfEmpty: Int = R.string.no_data_available)
         fun addNewUsers(newUserList: List<UserModel>)
-        fun setEmpty(textIfEmpty: Int)
+        fun updateScrollListener()
+        fun setEmpty(@StringRes textIfEmpty: Int = R.string.no_data_available)
         fun clean()
+        fun stopSwipy()
     }
 
     interface Presenter: BasePresenter {
         fun printUsers()
+        fun start()
         fun requestNewUsers()
         fun search(query: String = "")
+        fun searchNew()
         fun resetPage()
-        fun getCurrentUsers(): List<UserModel>
     }
 }

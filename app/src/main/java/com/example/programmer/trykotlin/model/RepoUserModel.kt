@@ -17,16 +17,20 @@ class RepoUserModel {
     }
 
     private var userList = listOf<UserModel>() //cache
-
+    fun getUsersCount() = userList.size
     fun getList() = userList
 
     private var searchList = SearchResultModel()
+    fun getSearchCount() = searchList.items.size
+    fun resetSearchResult() {
+        searchList = SearchResultModel()
+    }
 
     private fun zip(old: List<UserModel>, new: List<UserModel>): List<UserModel> { //without replace edited users
-        val res = mutableListOf<UserModel>()
-        res.addAll(old)
-        new.filter { !res.contains(it) }.forEach({res.add(it)})
-        return res.toList()
+        val result = old.toMutableList()
+//        new.filter { !result.contains(it) }.forEach({result.add(it)})
+        result.addAll(new)
+        return result.toList()
     }
 
     fun printString() = userList.forEach { println(it.toString()) }
@@ -87,9 +91,8 @@ class RepoUserModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
                         println("searchNewUsers doOnNext, query: $query, page: $page")
-                        val l = searchList.items.toMutableList()
-                        it.items.forEach({ l.add(it) })
-                        searchList.items = l.toList()
+                        it.items = it.items.filter { !searchList.items.contains(it) }
+                        searchList.items = zip(searchList.items, it.items)
                     })
                     .doOnError({
                         println("searchNewUsers doOnError, query: $query, page: $page")
@@ -101,11 +104,14 @@ class RepoUserModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext({
-                    println("getNewUsers")
+                    println("repo getNewUsers doOnNext")
                     printString(it)
                     userList = zip(userList, it)
                 })
-                .doOnError({ErrorHandlerHelper.showSnake(it)})
+                .doOnError({
+                    println("repo getNewUsers doOnError")
+                    ErrorHandlerHelper.showSnake(it)
+                })
     }
 
 }
