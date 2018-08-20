@@ -79,7 +79,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
     override fun updateScrollListener() {
         println("updateScrollListener")
 
-        recycler.removeOnScrollListener(listener)
+        recycler.clearOnScrollListeners()
         recycler.addOnScrollListener(listener)
     }
 
@@ -101,7 +101,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
                 presenter.searchNew()
             else
                 presenter.requestNewUsers()
-            recycler.removeOnScrollListener(listener)
+            recycler.clearOnScrollListeners()
         }
     }
 

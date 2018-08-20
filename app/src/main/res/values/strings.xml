@@ -13,12 +13,26 @@
     <string name="repos">Repository count</string>
     <!--User List Fields-->
     <string name="type">Type</string>
+    <string name="not_user">no</string>
+    <!--Repo List Fields-->
+    <string name="id">Id</string>
+    <string name="fullName">Repo Name</string>
+    <string name="owner">Owner</string>
+    <string name="is_private">Private</string>
+    <string name="description">Description</string>
+    <string name="created_at">Created at</string>
+    <string name="language">Language</string>
 
     <!--Pair-->
     <string name="denotation">Denotation</string>
     <string name="value">Value</string>
 
+    <!--Buttons-->
+    <string name="repo_button_text">Load Repo</string>
+    <string name="info_button_text">Show Info</string>
+
     <!--Action settings menu-->
+    <string name="action_search">Search</string>
     <string name="logging">Logging</string>
     <string name="enter_token">Enter access token</string>
     <string name="show_token">Show current token</string>
@@ -38,5 +52,4 @@
     <string name="no_access">Нет доступа</string>
     <string name="not_found">Никого не найдено по такому запросу</string>
 
-    <string name="action_search">Search</string>
 </resources>

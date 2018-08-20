@@ -37,6 +37,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'com.github.omadahealth:swipy:1.2.3'
+
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
 }
 repositories {
     mavenCentral()

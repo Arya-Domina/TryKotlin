@@ -69,20 +69,30 @@ class RepoUserModel {
     fun getUserDetails(username: String): Observable<UserModel> {
         val user: UserModel? = getUserByUsername(username)
 
-        return if (user == null) {
-            println("getUserDetails true")
+        return if (user == null || !user.hasDetails) {
+            println("user null or hasDetails false")
             requestUserDetails(username)
                     .doOnNext({
                         println("doOnNext getUserDetails user == null")
                     })
         } else {
-            println("getUserDetails false")
+            println("hasDetails true")
             Observable.just(user)
-                    .mergeWith(requestUserDetails(username))
+//                    .mergeWith(requestUserDetails(username))
                     .doOnNext({
                         println("doOnNext getUserDetails user != null")
                     })
         }
+    }
+
+    fun getUserRepos(username: String) : Observable<List<RepoModel>> {
+        return App.getApi().getRepos(username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { println("getUserRepos onNext") }
+                .doOnError {
+                    println("getUserRepos onError")
+                    ErrorHandlerHelper.showSnake(it) }
     }
 
     fun searchNewUsers(query: String, page: Int): Observable<SearchResultModel> =
