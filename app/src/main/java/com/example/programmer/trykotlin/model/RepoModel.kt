@@ -41,54 +41,15 @@ class RepoModel(@SerializedName("id") @Expose
             0, 0, 0, null)
 
     override fun toString(): String {
-        return "RepoModel(id=$id, nodeId=$nodeId, name=$name, fullName=$fullName, user=$user, " +
-                "private=$private, htmlUrl=$htmlUrl, description=$description, fork=$fork, " +
-                "createdAt=$createdAt, updatedAt=$updatedAt, pushedAt=$pushedAt, size=$size, " +
-                "stargazersCount=$stargazersCount, watchersCount=$watchersCount, language=$language)"
+        return "RepoModel(id=$id, name=$name, user=${user?.login}, " +
+                "private=$private, description=$description, " +
+                "createdAt=$createdAt, size=$size, " +
+                "stargazersCount=$stargazersCount, language=$language)\n"
     }
-
-
+//    override fun toString(): String {
+//        return "RepoModel(id=$id, nodeId=$nodeId, name=$name, fullName=$fullName, user=$user, " +
+//                "private=$private, htmlUrl=$htmlUrl, description=$description, fork=$fork, " +
+//                "createdAt=$createdAt, updatedAt=$updatedAt, pushedAt=$pushedAt, size=$size, " +
+//                "stargazersCount=$stargazersCount, watchersCount=$watchersCount, language=$language)"
+//    }
 }
-
-//    @SerializedName("has_issues")
-//    @Expose
-//    var hasIssues: Boolean = false
-//    @SerializedName("has_projects")
-//    @Expose
-//    var hasProjects: Boolean = false
-//    @SerializedName("has_downloads")
-//    @Expose
-//    var hasDownloads: Boolean = false
-//    @SerializedName("has_wiki")
-//    @Expose
-//    var hasWiki: Boolean = false
-//    @SerializedName("has_pages")
-//    @Expose
-//    var hasPages: Boolean = false
-//    @SerializedName("forks_count")
-//    @Expose
-//    var forksCount: Int = 0
-//    @SerializedName("archived")
-//    @Expose
-//    var archived: Boolean = false
-//    @SerializedName("open_issues_count")
-//    @Expose
-//    var openIssuesCount: Int = 0
-//    @SerializedName("license")
-//    @Expose
-//    var license: Any? = null
-//    @SerializedName("forks")
-//    @Expose
-//    var forks: Int = 0
-//    @SerializedName("open_issues")
-//    @Expose
-//    var openIssues: Int = 0
-//    @SerializedName("watchers")
-//    @Expose
-//    var watchers: Int = 0
-//    @SerializedName("default_branch")
-//    @Expose
-//    var defaultBranch: String? = null
-//    @SerializedName("permissions")
-//    @Expose
-//    var permissions: Permissions? = null
