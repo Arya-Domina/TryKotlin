@@ -1,6 +1,7 @@
 package com.example.programmer.trykotlin.list
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +16,7 @@ import android.widget.TextView
 import com.example.programmer.trykotlin.R
 import com.example.programmer.trykotlin.model.UserModel
 import com.example.programmer.trykotlin.util.AlertDialogHelper
+import com.example.programmer.trykotlin.web_test.WebActivity
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
 import com.squareup.picasso.Picasso
 
@@ -112,6 +114,7 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
         println("onCreate")
         Picasso.get().setIndicatorsEnabled(true)
         start()
+        startActivity(Intent(this, WebActivity::class.java))
 
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = UserListAdapter(listOf())
@@ -132,7 +135,8 @@ class MainListActivity : AppCompatActivity(), UserListContract.View {
             true
         }
         R.id.action_settings_logging -> {
-            println("logging something")
+//            println("logging something")
+            startActivity(Intent(this, WebActivity::class.java))
             true
         }
         R.id.action_settings_set_token -> {

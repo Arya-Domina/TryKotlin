@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/card_background"
     app:cardCornerRadius="12dp"
-    app:cardElevation="3dp"
-    app:cardBackgroundColor="@color/card_background">
+    app:cardElevation="3dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/image"
             android:layout_width="@dimen/normal_image_size"
@@ -19,9 +20,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@color/icon_background"
+            android:src="@drawable/icon_placeholder"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icon_placeholder" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/repo_button"
@@ -44,16 +45,15 @@
 
         <LinearLayout
             android:id="@+id/info_list"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            android:orientation="vertical" />
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/repo_list"
@@ -66,7 +66,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/info_list"
             app:layout_constraintVertical_bias="0.0">
 
         </android.support.v7.widget.RecyclerView>

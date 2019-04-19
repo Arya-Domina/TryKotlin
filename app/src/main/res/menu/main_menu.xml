@@ -11,19 +11,31 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/action_settings_logging"
-        android:title="@string/logging"
-        app:showAsAction="never" />
+        android:id="@+id/submenu"
+        android:title="@string/name"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_dots_vertical">
+        <menu>
 
-    <item
-        android:id="@+id/action_settings_set_token"
-        android:title="@string/enter_token"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/action_settings_logging"
+                android:title="@string/logging"
+                android:icon="@drawable/icon_error"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_settings_set_token"
+                android:title="@string/enter_token"
+                android:icon="@drawable/ic_dots_vertical"
+                app:showAsAction="never" />
 
 
-    <item
-        android:id="@+id/action_settings_get_token"
-        android:title="@string/show_token"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/action_settings_get_token"
+                android:title="@string/show_token"
+                android:icon="@android:drawable/btn_star"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
 </menu>
