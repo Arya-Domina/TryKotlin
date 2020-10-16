@@ -17,8 +17,24 @@ class RepoUserModel {
     }
 
     private var userList = listOf<UserModel>() //cache
+    fun getUsersCount() = userList.size
+    fun getList() = userList
+
+    private var searchList = SearchResultModel()
+    fun getSearchCount() = searchList.items.size
+    fun resetSearchResult() {
+        searchList = SearchResultModel()
+    }
+
+    private fun zip(old: List<UserModel>, new: List<UserModel>): List<UserModel> { //without replace edited users
+        val result = old.toMutableList()
+//        new.filter { !result.contains(it) }.forEach({result.add(it)})
+        result.addAll(new)
+        return result.toList()
+    }
 
     fun printString() = userList.forEach { println(it.toString()) }
+    private fun printString(list: List<UserModel>) = list.forEach { println(it.toString()) }
 
     private fun getUserByUsername(username: String): UserModel? { //from cache
         return userList.find { it.login == username }
@@ -37,7 +53,7 @@ class RepoUserModel {
     }
 
     private fun requestUserDetails(login: String): Observable<UserModel> =
-            App.getApi().userDetailsOb(login)
+            App.getApi().userDetails(login)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext({
@@ -50,20 +66,19 @@ class RepoUserModel {
                         ErrorHandlerHelper.showSnake(it)
                     })
 
-
     fun getUserDetails(username: String): Observable<UserModel> {
         val user: UserModel? = getUserByUsername(username)
 
-        return if (user == null) {
-            println("getUserDetails true")
+        return if (user == null || !user.hasDetails) {
+            println("user null or hasDetails false")
             requestUserDetails(username)
                     .doOnNext({
                         println("doOnNext getUserDetails user == null")
                     })
         } else {
-            println("getUserDetails false")
+            println("hasDetails true")
             Observable.just(user)
-                    .mergeWith(requestUserDetails(username))
+//                    .mergeWith(requestUserDetails(username))
                     .doOnNext({
                         println("doOnNext getUserDetails user != null")
                     })
@@ -94,6 +109,16 @@ class RepoUserModel {
         }
     }
 
+    fun getUserRepos(username: String) : Observable<List<RepoModel>> {
+        return App.getApi().getRepos(username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { println("getUserRepos onNext") }
+                .doOnError {
+                    println("getUserRepos onError")
+                    ErrorHandlerHelper.showSnake(it) }
+    }
+
     fun searchPage(query: String, page: Int, perPage: Int): Observable<SearchResultModel> =
             App.getApi().searchUserPagination(query, page, perPage)
                     .subscribeOn(Schedulers.io())
@@ -105,6 +130,35 @@ class RepoUserModel {
                         println("searchPage doOnError, query: $query, page: $page, perPage: $perPage")
                         ErrorHandlerHelper.showSnake(it)
                     })
+
+    fun searchNewUsers(query: String, page: Int): Observable<SearchResultModel> =
+            App.getApi().searchUserPagination(query, page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext({
+                        println("searchNewUsers doOnNext, query: $query, page: $page")
+                        it.items = it.items.filter { !searchList.items.contains(it) }
+                        searchList.items = zip(searchList.items, it.items)
+                    })
+                    .doOnError({
+                        println("searchNewUsers doOnError, query: $query, page: $page")
+                        ErrorHandlerHelper.showSnake(it)
+                    })
+
+    fun getNewUsers(): Observable<List<UserModel>> {
+        return App.getApi().getUsersSince(if (!userList.isEmpty()) userList.last().id ?: 0 else 0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext({
+                    println("repo getNewUsers doOnNext")
+                    printString(it)
+                    userList = zip(userList, it)
+                })
+                .doOnError({
+                    println("repo getNewUsers doOnError")
+                    ErrorHandlerHelper.showSnake(it)
+                })
+    }
 
 }
 

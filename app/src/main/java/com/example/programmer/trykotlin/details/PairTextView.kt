@@ -2,6 +2,7 @@ package com.example.programmer.trykotlin.details
 
 import android.content.Context
 import android.support.annotation.StringRes
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -14,6 +15,22 @@ class PairTextView(context: Context?) : LinearLayout(context) {
 
         findViewById<TextView>(R.id.denotation).setText(name)
         findViewById<TextView>(R.id.value).text = value
+    }
+
+//    fun setDenotation(@StringRes name: Int) {
+//        findViewById<TextView>(R.id.denotation).setText(name)
+//    }
+//    fun setValue(value: String) {
+//        findViewById<TextView>(R.id.value).text = value
+//    }
+//
+//    fun set(@StringRes name: Int, value: String) {
+//        findViewById<TextView>(R.id.denotation).setText(name)
+//        findViewById<TextView>(R.id.value).text = value
+//    }
+
+    fun setGravityCenter() {
+        this.gravity = Gravity.CENTER_HORIZONTAL
     }
 
 }

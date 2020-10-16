@@ -13,10 +13,24 @@
     <string name="repos">Repository count</string>
     <!--User List Fields-->
     <string name="type">Type</string>
+    <string name="not_user">no</string>
+    <!--Repo List Fields-->
+    <string name="id">Id</string>
+    <string name="fullName">Repo Name</string>
+    <string name="owner">Owner</string>
+    <string name="is_private">Private</string>
+    <string name="description">Description</string>
+    <string name="created_at">Created at</string>
+    <string name="language">Language</string>
+    <string name="stargazers_count">Stargazers</string>
 
     <!--Pair-->
     <string name="denotation">Denotation</string>
     <string name="value">Value</string>
+
+    <!--Buttons-->
+    <string name="repo_button_text">Load Repo</string>
+    <string name="info_button_text">Show Info</string>
 
     <!--Action settings menu-->
     <string name="logging">Logging</string>
@@ -36,6 +50,8 @@
     <string name="error_401">Wrong token</string>
     <string name="error_404">Нет пользователя</string>
     <string name="error_no_connection">Нет сети</string>
+    <string name="no_access">Нет доступа</string>
+    <string name="not_found">Никого не найдено по такому запросу</string>
 
     <!--buttons-->
     <string name="first">First</string>

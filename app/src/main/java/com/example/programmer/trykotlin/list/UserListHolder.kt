@@ -18,13 +18,10 @@ class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.findViewById<LinearLayout>(R.id.fields_list)
     }
 
-    fun bind(user: UserModel) {
-        println("bind user ${user.login}")
-
+    fun bind(user: UserModel, position: Int) {
         layout.removeAllViews()
-        layout.addView(PairTextView(imageView.context, R.string.login, user.login?.let { it }
-                ?: ""))
-        layout.addView(PairTextView(imageView.context, R.string.type, user.type?.let { it } ?: ""))
+        layout.addView(PairTextView(imageView.context, R.string.login, user.login ?: ""))
+        layout.addView(PairTextView(imageView.context, R.string.type, "$position ${user.type}, id ${user.id}"))
 
         Picasso.get().load(user.avatarUrl).fit().placeholder(R.drawable.icon_placeholder).error(R.drawable.icon_error).into(imageView)
 
@@ -33,4 +30,9 @@ class UserListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.context.startActivity(Intent(itemView.context, UserDetailsActivity::class.java).putExtra(Constants.USER, user.login))
         }
     }
+
+    fun bind(user: UserModel) {
+        bind(user, -1)
+    }
+
 }

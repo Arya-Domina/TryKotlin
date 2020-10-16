@@ -26,8 +26,8 @@ class ErrorHandlerHelper {
                     when (t.code()) {
                         401 -> {
                             currentView?.let {
-                                Snackbar.make(it, it.context.getString(R.string.error_401), Snackbar.LENGTH_LONG)
-                                        .setAction("now", { _ ->
+                                Snackbar.make(it, it.context.getString(R.string.error_401), Snackbar.LENGTH_LONG) // or Unauthorized
+                                        .setAction("edit", { _ ->
                                             val helper = AlertDialogHelper()
                                             helper.showGetterToken(it.context)
                                         })

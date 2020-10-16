@@ -7,12 +7,21 @@ class UserDetailsPresenter(private val view: UserDetailsContract.View) : UserDet
         println("init UserDetailsPresenter")
     }
 
-    override fun start() {
+    override fun getUser(username: String) {
+        RepoUserModel.instance.getUserDetails(username).subscribe({
+            view.bindUser(it)
+        }, {})
     }
 
-    override fun getUsver(username: String) {
+    override fun getUserInfo(username: String) {
         RepoUserModel.instance.getUserDetails(username).subscribe({
-            view.bindUsver(it)
+            view.bindUserInfo(it)
+        }, {})
+    }
+
+    override fun getUserRepos(username: String) {
+        RepoUserModel.instance.getUserRepos(username).subscribe({
+            view.bindUserRepo(it)
         }, {})
     }
 }

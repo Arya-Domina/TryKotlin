@@ -14,6 +14,11 @@ interface UserListContract {
         fun setButtons(page: Int, lastPage: Int)
         fun turnOnSearchMode()
         fun turnOffSearchMode()
+        fun addNewUsers(newUserList: List<UserModel>)
+        fun updateScrollListener()
+        fun setEmpty(@StringRes textIfEmpty: Int = R.string.no_data_available)
+        fun clean()
+        fun stopSwipy()
     }
 
     interface Presenter: BasePresenter {
@@ -21,5 +26,10 @@ interface UserListContract {
         fun requestUsers()
         fun searchUsers(query: String? = null, page: Int = 1, perPage: Int = 30)
         fun getCurrentQueryForLog(): String
+        fun start()
+        fun requestNewUsers()
+        fun search(query: String = "")
+        fun searchNew()
+        fun resetPage()
     }
 }

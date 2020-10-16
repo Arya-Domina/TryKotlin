@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".list.MainListActivity">
 
     <include layout="@layout/toolbar"
@@ -17,21 +18,22 @@
         android:text="@string/no_data_available"
         android:visibility="gone" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_margin="8dp"
         android:layout_above="@id/button_bar"
-        android:background="@color/swipe_layout_background">
+        android:background="@color/swipe_layout_background"
+        app:srl_direction="bottom">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/swipe_layout_background" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 
     <LinearLayout
         android:id="@+id/button_bar"

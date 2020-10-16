@@ -40,4 +40,23 @@ class UserModel(@SerializedName("login")
     override fun toString(): String {
         return "{login: $login, id: $id, type: $type, name: $name, avatarUrl: $avatarUrl, email: $email, location: $location, company: $company, repositoriesCount: $repositoriesCount} \n"
     }
+
+    override fun equals(other: Any?): Boolean { //
+        if (other !is UserModel) return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int {
+        var result = login?.hashCode() ?: 0
+        result = 31 * result + (id ?: 0)
+        result = 31 * result + (type?.hashCode() ?: 0)
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (avatarUrl?.hashCode() ?: 0)
+        result = 31 * result + (email?.hashCode() ?: 0)
+        result = 31 * result + (location?.hashCode() ?: 0)
+        result = 31 * result + (company?.hashCode() ?: 0)
+        result = 31 * result + (repositoriesCount ?: 0)
+        result = 31 * result + hasDetails.hashCode()
+        return result
+    }
 }
